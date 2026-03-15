@@ -1,0 +1,2094 @@
+import { useState, useMemo } from "react";
+
+// ═══════════════════════════════════════════════════════════════════════
+// VCN SKILL HANDBOOK (from official VCNebraska Skill Handbook document)
+// "It's not what you look at, but what you see"
+// "Excellence is achieved by the mastery of Fundamentals"
+// ═══════════════════════════════════════════════════════════════════════
+const HANDBOOK = {
+  serving: {
+    title: "Serving",
+    icon: "zap",
+    principles: [
+      "Serving should be like throwing",
+      "Throwing (or serving) use torque to generate force",
+      "Simple = Repeatable",
+    ],
+    sections: [
+      {
+        title: "Float Serve",
+        level: "Beginner",
+        keys: [
+          "Ready Position: Stand straight, left foot forward",
+          "Ball in opposite hand",
+          "Hitting elbow back and low",
+          "Wrist strong, hand flat",
+          "Step, Lift, Hit (or Step, Step, Lift, Hit for younger athletes)",
+          "Contact ball on the way up — lift only as high as you can reach",
+          "Contact on heel of hand, drive through center of the ball",
+          "Step (toe straight) and swing to target — loose shoulder creates more power",
+        ],
+      },
+      {
+        title: "Jump Float",
+        level: "Intermediate",
+        keys: [
+          "One hand toss (Left) or both hand toss",
+          "Four step approach: Right, Left, Lift, Right, Left",
+          "Straight line lift, straight line hit to target",
+          "Don't swing arms back when jumping — stay up in bow and arrow position",
+        ],
+      },
+      {
+        title: "Jump Topspin / Spike",
+        level: "Advanced",
+        keys: [
+          "Right hand, right foot",
+          "Step, toss and take rest of four-step approach and hit the ball",
+          "Footwork: Slow to Fast, Small to Big",
+          "High toss (lead yourself forward)",
+          "Swing arms to jump",
+        ],
+      },
+    ],
+    keyWords: ["Routine", "Strong flat hand", "Straight line toss", "Torque", "Simple = Repeatable"],
+  },
+  passing: {
+    title: "Forearm Passing",
+    icon: "users",
+    principles: [
+      "The ball 'knows' angles. Let the angle do the work.",
+      "Simple = Repeatable",
+      "Relaxed arms and hands respond best to unexpected events",
+    ],
+    sections: [
+      {
+        title: "Passing Keys",
+        level: "Beginner",
+        keys: [
+          "Arms down and relaxed",
+          "Wrists and hands together",
+          "Face the ball, angle to target",
+          "Lead leg (balanced and forward at contact)",
+        ],
+      },
+      {
+        title: "Serve Receive Responsibility",
+        level: "Intermediate",
+        keys: [
+          "Split the 3-meter line and service line in half (middle-middle)",
+          "Face the server — easier to cut off the ball with angles",
+          "Know your responsibility and seams (Angle Deep Left, Angle Short Right)",
+        ],
+      },
+      {
+        title: "Eyework Keys",
+        level: "Intermediate",
+        keys: [
+          "See the Server: Upper 3rd of body, shoulders, toss, speed of arm, hand contact, spin",
+          "See the Line of the Ball: deep, dropping, or short — know the line off server contact",
+        ],
+      },
+      {
+        title: "Movement Keys",
+        level: "Advanced",
+        keys: [
+          "Shuffle 1,2,3 to ball — end with slight lead leg forward at contact",
+          "Drop Step: playing ball behind us or deep seams — drop foot back, hips open, shuffle to ball, play off back hip",
+          "T-Stop: playing short balls closer to net — run to ball, hop stop (top of T), feet wide, hips low, raise ball with hips",
+        ],
+      },
+    ],
+    keyWords: ["Angle to target", "Face the ball", "Relaxed platform", "Shuffle 1-2-3", "Drop Step", "T-Stop", "Lead leg forward"],
+  },
+  attacking: {
+    title: "Attacking",
+    icon: "zap",
+    principles: [
+      "Jump high and hit hard with timing — use momentum, arm lift, and an approach that develops momentum",
+      "We will need torque to hit hard",
+      "Simple = Repeatable",
+      "Approaching at an angle towards the ball is better than approaching in a straight line to the ball",
+    ],
+    sections: [
+      {
+        title: "Approach Keys",
+        level: "Beginner",
+        keys: [
+          "Four Step Approach — Get to the Set: Right, Left, Right, Left (1..2...3.4)",
+          "Small steps to BIG steps",
+          "Slow steps to fast steps",
+          "Second step on or just behind 3 meter line",
+          "Last two steps need to be straight to ball — right foot to ball, left foot to area 5, heels inside sideline to jump",
+        ],
+      },
+      {
+        title: "Arm Swing Keys",
+        level: "Beginner",
+        keys: [
+          "Double Arm Lift to Frame/Load — arms down and relaxed, throw arms straight back and up",
+          "Loose shoulders will create force and speed",
+          "Pull hitting arm back and low — separate arms just below chest to frame",
+          "Point at ball with non-hitting arm",
+          "Unload: Shoulder to Shoulder (torque/rotation)",
+          "Non-hitting arm pull down and through to help with hip and shoulder rotation",
+          "Stay tall — contact the ball high (full extension) and in front of you",
+        ],
+      },
+      {
+        title: "Timing",
+        level: "Intermediate",
+        keys: [
+          "Timing regulates attacking. Four types of sets dictate timing:",
+          "First step sets — on your first step when setter contacts the ball",
+          "Second step sets",
+          "Third step sets",
+          "Fourth step sets",
+        ],
+      },
+      {
+        title: "Shuffle Footwork (Left Side)",
+        level: "Intermediate",
+        keys: [
+          "Pass + (3) Shuffle + Hit (3,4)",
+          "No pass + (5) Shuffle + Hit (5,4)",
+          "Pass + Hit (inside out approach)",
+        ],
+      },
+      {
+        title: "Transition Footwork",
+        level: "Advanced",
+        keys: [
+          "From the Left: Turn (open to the court) and Run",
+          "Four off (jump turn on 2nd step) and four back — when there's more time",
+          "Four off and negative four back — when running faster sets to pin",
+          "Three off three back — when there is less time",
+          "From the Middle: blocking left = three off, three back (plant back foot RT); blocking middle = three off, always open to right; blocking right = four off, running three back (circle pattern)",
+          "From the Right: Five off and four back (best when more time); Four off and three back; Four off and four-on (less time, attacking tempo)",
+        ],
+      },
+      {
+        title: "Advanced Attacking Concerns",
+        level: "Elite",
+        keys: [
+          "Left foot significantly in front of right when finishing approach — squared to setter for max range and power",
+          "Advanced hitters need to see the block — focus on ball when swinging, see block out of periphery",
+        ],
+      },
+    ],
+    keyWords: ["Slow to Fast", "Small to Big", "Double arm lift", "Shoulder to Shoulder", "Load/Frame/Unload", "3rd step to ball", "Drive off 2nd step", "Relaxed, loose shoulders", "Low Elbow"],
+  },
+  defense: {
+    title: "Individual Defense",
+    icon: "users",
+    principles: [
+      "Ball 'knows' angles, so let the ball do the work",
+      "Relaxed arms and hands respond best to unexpected events",
+      "Defense is about vision and relentless pursuit",
+      "Dig high and off net",
+      "Discipline = Freedom",
+      "Simple = Repeatable",
+    ],
+    sections: [
+      {
+        title: "Defensive Ready Position",
+        level: "Beginner",
+        keys: [
+          "Be STOPPED, be Ready — feet apart, knees bent, weight forward",
+          "Arms down and relaxed, palms up",
+          "BALL → SETTER → HITTER",
+          "'Prehop' before ball is contacted",
+          "Bellies, NOT butts",
+        ],
+      },
+      {
+        title: "Defensive Skills",
+        level: "Intermediate",
+        keys: [
+          "Forearm dig",
+          "Run to and dig",
+          "Sprawl — very big step, play ball very close to floor (two hands), finish on stomach",
+          "Pancake — very big step, helping hand pulls. Step with right leg, pancake with right hand, finish on belly",
+          "Knee drive — lead step slightly forward, go down on lead knee, cut ball off, stay tall with chest",
+          "Collapse dig — play ball low and out in front of body, finish on forearms",
+        ],
+      },
+      {
+        title: "Defensive Eyework",
+        level: "Advanced",
+        keys: [
+          "Ball, Setter, Hitter — eyes on hitter early, line of approach (hitters tend to hit where the set takes them)",
+          "Looking (wide focus/peripheral vision) vs. Seeing (narrow focus)",
+          "Attacker angle of approach, shoulders",
+          "Where is hand going at contact",
+          "Diggers put yourself in a position for the ball to be hit AT you",
+        ],
+      },
+      {
+        title: "Perimeter Defense Base",
+        level: "Intermediate",
+        keys: [
+          "Wing defenders: 4x4",
+          "Middle back: 1 step back from middle/middle",
+        ],
+      },
+    ],
+    keyWords: ["Be stopped before contact", "Palms up", "Relaxed platform", "See attacker (can she hit at me?)", "Under ball w/ platform", "Face ball, angle to target", "Dig 10x20", "Stand and dig it", "Discipline = Freedom"],
+  },
+  setting: {
+    title: "Setting",
+    icon: "star",
+    principles: [
+      "The most important contribution the setter can make is to give 'good swings' to their hitters",
+      "The second most important contribution is to make 'informed choices' about which hitter to set",
+      "Setters must be great communicators and Leaders",
+      "Simple = Repeatable",
+    ],
+    sections: [
+      {
+        title: "Hands",
+        level: "Beginner",
+        keys: [
+          "Ball shaped hands / neutral wrists",
+          "Triangle with your elbows, triangle with your hands",
+          "Above the forehead contact point (hairline), finish palms to target",
+          "Hands up on time — move around court first, then get hands up",
+        ],
+      },
+      {
+        title: "Footwork",
+        level: "Beginner",
+        keys: [
+          "Base 3.5' off the net",
+          "Face the ball, back to net, arms down and relaxed (ready to run)",
+          "When moving off the net — get parallel with net and square to target just before setting",
+          "Use lead foot closest to direction you are moving (Forward = Right Foot, Back = Left Foot)",
+          "Use the ground / Weight transfer",
+        ],
+      },
+      {
+        title: "Jump Setting",
+        level: "Advanced",
+        keys: [
+          "Stay tall, neutral setup",
+          "Use the ground for force, step/together",
+          "Hips under ball, parallel to net",
+          "Ball in your midline, set ball on your way up or at peak of jump",
+        ],
+      },
+      {
+        title: "Back Setting",
+        level: "Advanced",
+        keys: [
+          "Stay tall, neutral setup",
+          "Use ground for force",
+          "Hips under ball, setup parallel to net",
+          "Set up ball on right eye, turn and extend arms to target (right shoulder should finish to target)",
+          "Watch ball from contact to hitter contact — have a relaxed turn",
+        ],
+      },
+      {
+        title: "Set Location",
+        level: "Intermediate",
+        keys: [
+          "In System — for pins: 3ft off, 3ft in. Always error inside and off",
+          "Out of System — 4ft in, 4ft off. Always error inside and high off",
+        ],
+      },
+    ],
+    keyWords: ["Ball shaped hands", "Hairline contact", "Palms to target", "Base 3.5' off net", "Square to target", "Use the ground", "Good swings", "Informed choices"],
+  },
+  blocking: {
+    title: "Blocking",
+    icon: "zap",
+    principles: [
+      "Swing blocking allows blockers to be faster and jump higher",
+      "Hitters tend to hit the ball where the sets take them",
+      "Early vision leads to faster movements",
+      "Simple = Repeatable",
+    ],
+    sections: [
+      {
+        title: "Blocking Keys",
+        level: "Intermediate",
+        keys: [
+          "Eyework: Ball - Setter - Ball - Hitter",
+          "Footwork: Habitual Patterns",
+          "Vision and Timing",
+          "Ready position should be balanced and athletic (hands down)",
+        ],
+      },
+      {
+        title: "Swing Blocking Keys",
+        level: "Advanced",
+        keys: [
+          "Three step move: 1st Step small directional move with hip over knees and ankles, 2nd Step big crossover step to pole, 3rd Step finishing toward attacker",
+          "Hands go down — not up — when starting move",
+          "Throw arms back and straight on 2nd step",
+          "Elbows bent slightly when jumping and bring arms up through chest as we jump",
+        ],
+      },
+      {
+        title: "Split Step Keys",
+        level: "Advanced",
+        keys: [
+          "Pre-hop performed by MB prior to crossover swing block move",
+          "Loads the back foot, gets into sprinter's stance for explosive steps",
+          "1st Step: small directional move with hip over knees and ankles",
+          "2nd Step: fast big crossover step to pole",
+          "3rd Step: finish with foot not all the way closed, finish foot toward attacker",
+        ],
+      },
+      {
+        title: "X-Over 2 Keys",
+        level: "Elite",
+        keys: [
+          "For when you're late and must cover a lot of ground quickly",
+          "1st step: medium directional step, arms start to come back (bent)",
+          "2nd step: big fast crossover foot turns to attacker, arms come up through chest and fire over net in direction ball is being attacked",
+        ],
+      },
+      {
+        title: "Arm Work Keys",
+        level: "Intermediate",
+        keys: [
+          "Hands out in front, down or at hip height",
+          "Hands make small jab in direction of step — NOT big swimming motion",
+          "Arms go back straight and fast (double arm lift)",
+          "Slight bend in elbows, bring arms through your chest",
+          "Fire arms over net (NOT UP) — move in the direction the ball is getting attacked",
+          "Hands shape ball back into court",
+        ],
+      },
+      {
+        title: "Footwork Patterns",
+        level: "Intermediate",
+        keys: [
+          "X-over 3, X-over 2, Q-3, 5 step",
+          "Block spot: 6-8 squares in from the antenna — so athletes spend more time with eyes on attacker",
+        ],
+      },
+    ],
+    keyWords: ["Ball-Setter-Ball-Hitter", "Swing block", "Split step", "X-over 2", "Hands shape ball into court", "Fire arms over net", "Eyes on attacker"],
+  },
+  eyework: {
+    title: "Eyework / Reading",
+    icon: "search",
+    principles: [
+      "Reading is the premier skill in the game",
+      "Great players see things other players don't — not superhuman sight, but they process information to determine the highest probable outcomes before they occur",
+      "Looking (wide focus — peripheral vision) vs. Seeing (narrow focus)",
+      "Discipline = Freedom — once you guess one direction you are not free to go in any other direction",
+      "See the right things, what you look at when you look at it matters",
+      "See the Setter (Set Up), See the Set (Extension/Force)",
+    ],
+    sections: [
+      {
+        title: "Reading Keys",
+        level: "Intermediate",
+        keys: [
+          "1. See (narrow focus) the pass: on, off, over",
+          "2. Look (wide focus) at the hitter: are they in the play, identify the route",
+          "3. See the setter: body language, hand positioning",
+          "4. Look at the set: direction, speed, location",
+          "5. See the hitter: angle of attack, outstretched hand, dropped elbow, fully loaded arm",
+          "6. Say what you see, make the play",
+        ],
+      },
+      {
+        title: "Blocker vs. Defender Timing",
+        level: "Advanced",
+        keys: [
+          "Blockers: shorter the set, less time on ball — long or higher set, eyes on ball longer",
+          "Defenders should get on hitter's sooners than the blockers",
+        ],
+      },
+    ],
+    keyWords: ["Looking vs. Seeing", "Discipline = Freedom", "See the Setter", "See the Set", "Wide focus", "Narrow focus", "Say what you see"],
+  },
+};
+
+// Map drill categories to handbook sections
+const DRILL_TO_HANDBOOK = {
+  Serving: ["serving"],
+  Passing: ["passing"],
+  "Eyework / Vision": ["eyework"],
+  Attacking: ["attacking"],
+  Blocking: ["blocking"],
+  Defense: ["defense"],
+  Competitive: ["attacking", "defense", "eyework"],
+  Warmup: ["passing", "defense"],
+};
+
+// ─── VCN DRILL DATABASE (extracted from practice plan whiteboards) ───
+const DRILLS = [
+  // ═══════════════ SERVING ═══════════════
+  {
+    id: "serve-speed-accuracy",
+    name: "Serve: Speed & Accuracy",
+    category: "Serving",
+    duration: { min: 15, max: 30 },
+    difficulty: ["Beginner", "Intermediate", "Advanced", "Elite"],
+    ageRange: [11, 18],
+    players: "Full Team",
+    description:
+      "Players serve 10 balls and record results on the board. Goal: Routine (Inhale, Exhale), Strong flat hand 'No Spin', Straight line toss (Be Mindful). Targets: 90% in, 80% zone, 70% seam.",
+    setup:
+      "Full court. Whiteboard or clipboard with tracking sheet for each player. Mark zones and seam areas on the other side of the net.",
+    coachingPoints: [
+      "Routine: Inhale, exhale before every serve",
+      "Strong flat hand — no spin",
+      "Straight line toss, be mindful",
+      "Track: In %, Zone %, Seam %, Float vs Seam count",
+      "90% in, 80% zone, 70% seam targets",
+    ],
+    tags: ["serve", "accuracy", "tracking", "accountability", "routine"],
+    phase: "Warmup / Individual",
+  },
+  {
+    id: "serve-seam-pass",
+    name: "Serve Seam & Pass",
+    category: "Serving",
+    duration: { min: 10, max: 16 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [13, 18],
+    players: "Full Team (split)",
+    description:
+      "Servers target seams between passers. Passers work on seam communication and ownership. Rotate servers and passers.",
+    setup:
+      "Full court. 3-4 servers on one side, 3 passers in serve receive formation on the other. Setter at target.",
+    coachingPoints: [
+      "Servers: Target the seams between passers",
+      "Passers: Call the ball early, communicate ownership",
+      "Organize platform early",
+      "Play through your angle",
+    ],
+    tags: ["serve", "passing", "seam", "communication"],
+    phase: "Warmup / Individual",
+  },
+
+  // ═══════════════ PASSING / SERVE RECEIVE ═══════════════
+  {
+    id: "seam-serve-pass",
+    name: "Seam: Serve & Pass",
+    category: "Passing",
+    duration: { min: 6, max: 20 },
+    difficulty: ["Beginner", "Intermediate", "Advanced", "Elite"],
+    ageRange: [11, 18],
+    players: "Full Team",
+    description:
+      "Face where ball is coming from, angle platform to target. See server contact, Direction of ball (organize platform early). Forward and Balanced at moment of contact.",
+    setup:
+      "Full court. Servers on one end, passers in serve receive formation. Setter at net as target. Rotate groups through.",
+    coachingPoints: [
+      "Face where ball is coming from, angle platform to target",
+      "See the server (Toss, Contact)",
+      "Look at flight of ball, call it",
+      "Organize platform early",
+      "Forward & balanced at contact",
+    ],
+    tags: ["passing", "serve receive", "platform", "fundamentals"],
+    phase: "Warmup / Individual",
+  },
+  {
+    id: "sr-passing-w-mb",
+    name: "S/R Passing w/ MB",
+    category: "Passing",
+    duration: { min: 10, max: 15 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [14, 18],
+    players: "Full Team",
+    description:
+      "Serve receive with middle blockers running their approach. Passers must pass accurately while MBs time their footwork. Combines passing with offensive timing.",
+    setup:
+      "Full court serve receive formation with MB at the net ready to run approach routes. Setter at target position.",
+    coachingPoints: [
+      "Pass must be accurate enough for setter to run middles",
+      "MB must time their approach to the pass",
+      "Passers: same fundamentals — platform, angle, balance",
+      "Load leg, forward on contact",
+    ],
+    tags: ["passing", "serve receive", "middle blocker", "timing"],
+    phase: "Warmup / Individual",
+  },
+
+  // ═══════════════ EYEWORK / VISION ═══════════════
+  {
+    id: "bsbh-eyework",
+    name: "B.S.B.H. (Eyework)",
+    category: "Eyework / Vision",
+    duration: { min: 15, max: 40 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [13, 18],
+    players: "Full Team",
+    description:
+      "Looking (Wide Focus - peripheral vision) vs. Seeing (Narrow Focus). Discipline = Freedom. Once you guess one direction, you are not free to move any direction. Reaction Time: See the right things, what you look at when you look at it matters.",
+    setup:
+      "Full court with setter and hitters. Coach on box or live play. Diagram shows court split with setter positioning.",
+    coachingPoints: [
+      "1pt Pass = Dedicate, Drop Hands (See the Set)",
+      "2pt Pass = Read vs. Load (See the Setter)",
+      "3pt Pass = Tactics: Read, Load, Front, Commit (See the Setter, See the Set)",
+      "Have a Plan, Read the Setter, Make a Play",
+      "See the Setter (Setup), See the Set (Extension/Force)",
+    ],
+    tags: ["eyework", "vision", "reading", "defense", "blocking", "decision making"],
+    phase: "Skill Development",
+  },
+
+  // ═══════════════ ATTACKING ═══════════════
+  {
+    id: "attacking-toolbox",
+    name: "Attacking Reps (Toolbox)",
+    category: "Attacking",
+    duration: { min: 15, max: 30 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [13, 18],
+    players: "Full Team",
+    description:
+      "Setters rotate every 8min. Attackers work on full range — line, cross, tip, roll. Work on attacking with range and shot selection. Goal: Have a plan, see the block, attack accordingly.",
+    setup:
+      "Full court. Setter at net. Coach feeds balls. Hitters in lines. Add block for advanced groups. Toss ball to S or L.",
+    coachingPoints: [
+      "Attack with range — have multiple shots",
+      "See the block before you swing",
+      "Work on attacking at full range",
+      "Setters rotate every 8 minutes",
+    ],
+    tags: ["attacking", "hitting", "shot selection", "toolbox"],
+    phase: "Skill Development",
+  },
+  {
+    id: "attacking-tempo-reps",
+    name: "Attacking Tempo Reps",
+    category: "Attacking",
+    duration: { min: 15, max: 20 },
+    difficulty: ["Advanced", "Elite"],
+    ageRange: [15, 18],
+    players: "Full Team",
+    description:
+      "Working on timing and tempo of attack. 1st tempo: GO/B - Br, 30. 2nd tempo: Set/A, Sc. Focus on matching the setter's rhythm and hitting at different speeds.",
+    setup:
+      "Full court. Setter at net. MBs and OHs run tempo approaches. Coach initiates with a pass or free ball.",
+    coachingPoints: [
+      "1st tempo: be in the air when setter contacts ball",
+      "2nd tempo: leave on the set",
+      "Match the setter's rhythm",
+      "Arm swing timing is everything",
+    ],
+    tags: ["attacking", "tempo", "timing", "middle blocker", "setter connection"],
+    phase: "Skill Development",
+  },
+  {
+    id: "attack-school",
+    name: "Attack School",
+    category: "Attacking",
+    duration: { min: 10, max: 15 },
+    difficulty: ["Beginner", "Intermediate", "Advanced"],
+    ageRange: [11, 16],
+    players: "Groups of 4-6",
+    description:
+      "Focus: Tempo & Timing, High & Fast, Find hands. Find ball early with eyes, contact with setter. MB - S/R + block, Times enter Ro.S / Ro.5. Setters rotate every 5 min.",
+    setup:
+      "Half court. Coach or setter feeds. Hitters work on specific approach patterns and shot types.",
+    coachingPoints: [
+      "Focus on tempo and timing",
+      "High and fast approach",
+      "Find your hands — clean arm swing",
+      "Find the ball early with your eyes",
+    ],
+    tags: ["attacking", "fundamentals", "approach", "arm swing"],
+    phase: "Skill Development",
+  },
+  {
+    id: "attacking-reps-w-block",
+    name: "Attacking Reps w/ Block",
+    category: "Attacking",
+    duration: { min: 15, max: 20 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [14, 18],
+    players: "Full Team",
+    description:
+      "Approach, timing, see block and make decisions. OH attack from SR ball, feed ball from line with Ro (Score B + Ro). Attack from different positions against live block.",
+    setup:
+      "Full court with blockers on the other side. Coach feeds or live rally initiated. Hitters must read the block.",
+    coachingPoints: [
+      "See the block before you swing",
+      "Shot selection based on what the block gives you",
+      "Use the block — wipe, tool, tip over",
+      "Balanced approach, explosive jump",
+    ],
+    tags: ["attacking", "blocking", "shot selection", "game-like"],
+    phase: "Skill Development",
+  },
+
+  // ═══════════════ BLOCKING ═══════════════
+  {
+    id: "blocking-work",
+    name: "Blocking Work / Reps",
+    category: "Blocking",
+    duration: { min: 15, max: 20 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [13, 18],
+    players: "Groups",
+    description:
+      "Seal the net, step close to the net. See attackers' angle, hands through — chest pressed before contact. Slide, X-over 2, Triple. Make a move on box (switch ½ way).",
+    setup:
+      "At the net. Coach on box hitting. Blockers work footwork patterns then add live blocking vs. hitters.",
+    coachingPoints: [
+      "Seal the net — press hands over",
+      "See the attacker's angle",
+      "Hands through, chest pressed before contact",
+      "Footwork: Slide, Crossover 2, Triple step",
+    ],
+    tags: ["blocking", "footwork", "net play", "hands"],
+    phase: "Skill Development",
+  },
+
+  // ═══════════════ DEFENSE ═══════════════
+  {
+    id: "dig-run-through",
+    name: "Dig / Run-Through Reps",
+    category: "Defense",
+    duration: { min: 10, max: 15 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [13, 18],
+    players: "Groups of 4-6",
+    description:
+      "Be stopped as attackers contact with base. Must dig while in athletic position. Platform control and run-through technique.",
+    setup:
+      "Half court. Coach on box or hitter attacking. Defenders in base position, dig and transition.",
+    coachingPoints: [
+      "Be stopped at contact — athletic base",
+      "Read the hitter's angle",
+      "Platform through the ball",
+      "Dig, run through, be ready for next ball",
+    ],
+    tags: ["defense", "digging", "platform", "athleticism"],
+    phase: "Skill Development",
+  },
+
+  // ═══════════════ COMPETITIVE / GAME-LIKE ═══════════════
+  {
+    id: "exchange-4v4",
+    name: "Exchange 4v4",
+    category: "Competitive",
+    duration: { min: 15, max: 25 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [13, 18],
+    players: "8+ players (two teams of 4)",
+    description:
+      "Games to 15pt. Start 4-4 @ 9pt. MB goes front row. Scoring: 2pt for Tip or Roll K-1, +1 pt for no go. MB will rotate every game. Be stopped, see attackers arm at contact. Attackers make good decisions (high deep swaps into seams).",
+    setup:
+      "Full court, 4v4 format. MB starts front row. Rotate MB every game. Coach keeps score on board.",
+    coachingPoints: [
+      "Be stopped — see attacker's arm at contact",
+      "Attackers make good decisions",
+      "All points for NO GO",
+      "High deep swaps into seams",
+      "Pts for tip or roll shot from back row",
+    ],
+    tags: ["competitive", "4v4", "game-like", "scoring", "decision making"],
+    phase: "Competitive",
+  },
+  {
+    id: "exchange-5v5",
+    name: "Exchange 5v5",
+    category: "Competitive",
+    duration: { min: 15, max: 25 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [14, 18],
+    players: "10+ players (two teams of 5)",
+    description:
+      "Be stopped, see attackers arm at contact. Attackers make good decisions (high deep swaps into seams). Games to 15pt. Start 4-4 @ 9pt. MB comes front row. Pt for tip or roll shot from back row. All points for NO GO.",
+    setup:
+      "Full court, 5v5 format. Similar rules to 4v4 Exchange but with an extra player per side.",
+    coachingPoints: [
+      "Same principles as 4v4 but with more coverage",
+      "Communication is key with 5 players",
+      "MB transitions and timing critical",
+    ],
+    tags: ["competitive", "5v5", "game-like", "exchange"],
+    phase: "Competitive",
+  },
+  {
+    id: "6v6-transition-wash",
+    name: "6v6 Transition Wash",
+    category: "Competitive",
+    duration: { min: 15, max: 30 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [14, 18],
+    players: "12+ (two full teams)",
+    description:
+      "Goal: Transition hard, find ball early with your eyes, come down running. Transition ball from coach — loser of that rally gets OOS ball, must win both balls to earn a big point. Teams track wins.",
+    setup:
+      "Full court 6v6. Coach on sideline with ball cart. Whiteboard for scoring. Rotation wheels for each side.",
+    coachingPoints: [
+      "Transition hard — find ball early with eyes",
+      "Come down running after every play",
+      "Loser gets OOS ball from coach",
+      "Must win BOTH balls to earn a big point",
+      "Make good attacking decisions",
+    ],
+    tags: ["competitive", "6v6", "transition", "wash", "game-like"],
+    phase: "Competitive",
+  },
+  {
+    id: "red-zone-ladder",
+    name: "Red Zone Ladder",
+    category: "Competitive",
+    duration: { min: 25, max: 38 },
+    difficulty: ["Advanced", "Elite"],
+    ageRange: [15, 18],
+    players: "12+ (two full teams)",
+    description:
+      "Goal: In red zone, make good decisions. Know who is blocking you and how they are blocking you. If you have to give it, know who to give it to. Teams play in rotation with designated scoring chart. OK Rotate: carry +1, in Rotate: count +1, Loss: ¼ way.",
+    setup:
+      "Full court 6v6. Scoring ladder on whiteboard with A/B columns. Each rotation tracked. Teams start at specific scores (e.g., 22, 25).",
+    coachingPoints: [
+      "Make good decisions in the red zone (20-25)",
+      "Know who is blocking you",
+      "Know how they are blocking you",
+      "If you give it up, know who to give it to",
+      "Play to win — finish games",
+    ],
+    tags: ["competitive", "red zone", "endgame", "decision making", "clutch"],
+    phase: "Competitive",
+  },
+  {
+    id: "nevilles-rows",
+    name: "Neville's Rows",
+    category: "Competitive",
+    duration: { min: 18, max: 45 },
+    difficulty: ["Advanced", "Elite"],
+    ageRange: [15, 18],
+    players: "12+ (two full teams)",
+    description:
+      "Rotation-specific competitive drill. Side out 65% or higher target. 4/6=66%, G.P% 57%. Each rotation (Ro.1, Ro.3, Ro.4, Ro.5, Ro.6) is tracked separately with lineups and scores. Named after John Cook's system at Nebraska.",
+    setup:
+      "Full court 6v6. Specific rotations listed on board with S, OH, M, OP, OH, L positions. Track sideout % per rotation.",
+    coachingPoints: [
+      "Goal: Side out 65% or higher",
+      "Track every rotation separately",
+      "Know your responsibilities in each rotation",
+      "Run your plays with conviction",
+    ],
+    tags: ["competitive", "rotations", "sideout", "system", "tracking"],
+    phase: "Competitive",
+  },
+  {
+    id: "nevilles-offensive",
+    name: "Neville's (Offensive)",
+    category: "Competitive",
+    duration: { min: 20, max: 50 },
+    difficulty: ["Advanced", "Elite"],
+    ageRange: [15, 18],
+    players: "12+ (two full teams)",
+    description:
+      "Offense gets scored 1:10 win the game + break. Scoring: FBSO 3pt, MB Kill 5pt, High Hands Kill 5pt, Win Rally 1pt, Balance close = 1. Full offensive system work through rotations.",
+    setup:
+      "Full court 6v6. Offense tracked with bonus points for MB kills and high-hands kills. Rotations charted.",
+    coachingPoints: [
+      "First Ball Sideout is worth 3 points",
+      "MB Kill and High Hands Kill worth 5 points each",
+      "Win rally = 1 point, Balance/close = 1",
+      "Reward aggressive, efficient offense",
+    ],
+    tags: ["competitive", "offensive system", "scoring", "MB", "sideout"],
+    phase: "Competitive",
+  },
+  {
+    id: "4-plus-4-one-way",
+    name: "4+4 One Way",
+    category: "Competitive",
+    duration: { min: 30, max: 50 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [14, 18],
+    players: "8+ players",
+    description:
+      "Score tracking with S+B, S+Trn, S+Trn, S+OoS format. Goal: Work hard for 4 B.o.b, S.O/ Ctr at higher. Teams play one-way scoring — only the serving or receiving team can score.",
+    setup:
+      "Full court. 4v4 or modified lineup. Score tracked per rotation on whiteboard with A/B columns and percentages.",
+    coachingPoints: [
+      "One team can score at a time",
+      "S+B (Serve + Block), S+Trn (Serve + Transition)",
+      "S+OoS (Serve + Out of System)",
+      "Track percentages — accountability",
+    ],
+    tags: ["competitive", "4v4", "one-way", "scoring", "tracking"],
+    phase: "Competitive",
+  },
+  {
+    id: "6v6-out-of-system",
+    name: "6v6 Out of System",
+    category: "Competitive",
+    duration: { min: 15, max: 20 },
+    difficulty: ["Advanced", "Elite"],
+    ageRange: [15, 18],
+    players: "12+ (two full teams)",
+    description:
+      "Games to 15pt, start 4-4. Scoring: 1pt whichever setter is off — side blocker. 2pt MB kill. 2pt high hands tool. Practice making plays when the pass isn't perfect.",
+    setup:
+      "Full court 6v6. Coach initiates with an imperfect pass or OOS ball. Teams play out the rally.",
+    coachingPoints: [
+      "Attackers: have a plan, see the block",
+      "Setter: make good decisions out of system",
+      "High ball to the antenna — shot selection matters",
+      "2pt MB kill, 2pt high hands tool",
+    ],
+    tags: ["competitive", "6v6", "out of system", "decision making"],
+    phase: "Competitive",
+  },
+  {
+    id: "6v6-side-out",
+    name: "6v6 Side Out",
+    category: "Competitive",
+    duration: { min: 30, max: 50 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [14, 18],
+    players: "12+ (two full teams)",
+    description:
+      "Goal: Complete, side out 65% or at a (Elite+ Scores). Short Recovery between sets. Full competitive sideout work tracking each rotation.",
+    setup:
+      "Full court 6v6. Track sideout percentage per rotation. A and B sides with scoring chart.",
+    coachingPoints: [
+      "Side out 65% is the target",
+      "Every first-ball kill matters",
+      "Know your plays in each rotation",
+      "Short recovery — high intensity",
+    ],
+    tags: ["competitive", "6v6", "sideout", "rotations"],
+    phase: "Competitive",
+  },
+  {
+    id: "5-before-3",
+    name: "5 Before 3",
+    category: "Competitive",
+    duration: { min: 15, max: 20 },
+    difficulty: ["Advanced", "Elite"],
+    ageRange: [15, 18],
+    players: "12+ (two full teams)",
+    description:
+      "Receiving team needs to sideout 65% or higher (G.P/P.P% 57 or higher). Receiving team needs to score 5pt before serving team scores 3. Both teams get a chance to receive in their rotation, then move on to next rotation and start again.",
+    setup:
+      "Full court 6v6. Track per rotation. Both teams receive in each rotation before moving to next.",
+    coachingPoints: [
+      "Receiving team must score 5 before servers get 3",
+      "65% sideout target for receivers",
+      "Both teams get a chance in each rotation",
+      "High pressure — every point matters",
+    ],
+    tags: ["competitive", "sideout", "pressure", "rotations"],
+    phase: "Competitive",
+  },
+  {
+    id: "back-forth-11-11",
+    name: "Back & Forth From 11-11",
+    category: "Competitive",
+    duration: { min: 20, max: 30 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [14, 18],
+    players: "12+ (two full teams)",
+    description:
+      "2 Servers each wing + a slide to new rotations. Play multiple games (x). After 3 games = 5 Switch. Set: Mulligan / Replace to play. Practice closing out tight games.",
+    setup:
+      "Full court 6v6. Start every game at 11-11. Multiple short games. Track wins.",
+    coachingPoints: [
+      "Every game starts at 11-11 — be ready to compete",
+      "Practice finishing tight sets",
+      "After 3 games, switch rotations",
+      "High pressure environment",
+    ],
+    tags: ["competitive", "closing", "pressure", "game-like"],
+    phase: "Competitive",
+  },
+  {
+    id: "18-18-validate",
+    name: "18-18 Validate",
+    category: "Competitive",
+    duration: { min: 15, max: 20 },
+    difficulty: ["Advanced", "Elite"],
+    ageRange: [15, 18],
+    players: "12+ (two full teams)",
+    description:
+      "Sim games from 18-18, win by 2. Win the game = Validate. Attack errors = Steal. Validate OoS Kill. Practice the most critical moments of a set. Rotations: 1/4, 2/5, 3/6.",
+    setup:
+      "Full court 6v6. Start at 18-18. Play through specific rotations. Track results.",
+    coachingPoints: [
+      "Win by 2 from 18-18",
+      "Validate your kills — win games",
+      "Attack errors = steal for other team",
+      "OoS kills are validated (bonus)",
+      "Rotations: 1/4, 2/5, 3/6",
+    ],
+    tags: ["competitive", "endgame", "validation", "pressure", "clutch"],
+    phase: "Competitive",
+  },
+  {
+    id: "oos-games-to-9",
+    name: "OoS Games to 9pt",
+    category: "Competitive",
+    duration: { min: 10, max: 15 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [14, 18],
+    players: "12+ (two full teams)",
+    description:
+      "Coach-initiated out of system games. Variations: Hot(s), Hot(3), 9(B), 9(A). Front Row / Back Row with slow games. Practice making plays when the first ball isn't perfect.",
+    setup:
+      "Full court 6v6. Coach initiates OOS ball. Games to 9 points.",
+    coachingPoints: [
+      "Coach initiated — practice OOS situations",
+      "Multiple variations to keep it fresh",
+      "Front row and back row options",
+      "Short games — high intensity",
+    ],
+    tags: ["competitive", "out of system", "short games"],
+    phase: "Competitive",
+  },
+  {
+    id: "mb-tournament",
+    name: "MB Tournament",
+    category: "Competitive",
+    duration: { min: 15, max: 25 },
+    difficulty: ["Advanced", "Elite"],
+    ageRange: [15, 18],
+    players: "Full Team",
+    description:
+      "Middle blocker focused competitive drill. MBs compete in various scenarios — quick attacks, slides, blocking matchups. Track MB performance across different situations.",
+    setup:
+      "Full court. MB-focused rotations. Score MB kills, blocks, and efficiency.",
+    coachingPoints: [
+      "MBs compete against each other",
+      "Quick attack timing and execution",
+      "Blocking matchups and reads",
+      "Track performance — accountability",
+    ],
+    tags: ["competitive", "middle blocker", "tournament", "position-specific"],
+    phase: "Competitive",
+  },
+  {
+    id: "straight-play-5pt",
+    name: "Straight Play 5pt Sets",
+    category: "Competitive",
+    duration: { min: 15, max: 25 },
+    difficulty: ["Intermediate", "Advanced", "Elite"],
+    ageRange: [13, 18],
+    players: "12+ (two full teams)",
+    description:
+      "Play straight sets to 5 points. Quick competitive sets that force urgency and intensity from the start. Rotate after each set.",
+    setup:
+      "Full court 6v6. Play multiple short sets to 5 points. Track wins per rotation.",
+    coachingPoints: [
+      "Every point matters — no time to recover",
+      "Start fast, play with urgency",
+      "Rotate through all rotations",
+    ],
+    tags: ["competitive", "short sets", "urgency", "game-like"],
+    phase: "Competitive",
+  },
+  {
+    id: "combine-6v6-oos",
+    name: "Combine 6v6 Out of System",
+    category: "Competitive",
+    duration: { min: 20, max: 30 },
+    difficulty: ["Advanced", "Elite"],
+    ageRange: [15, 18],
+    players: "12+ (two full teams)",
+    description:
+      "Goal: Complete. Attackers have a plan, see the block — 'High & Flat'. Score: 1pt Big Ball, High Hands/66 tool, 3pt Big or MB Twos. Games start 13-13, win by 2pt.",
+    setup:
+      "Full court 6v6. Coach initiates OOS situations. Start at 13-13.",
+    coachingPoints: [
+      "Attackers: have a plan, see the block",
+      "Go high and flat when out of system",
+      "Big ball kills worth 1pt",
+      "MB kills and high hands tools worth extra",
+    ],
+    tags: ["competitive", "6v6", "out of system", "combine"],
+    phase: "Competitive",
+  },
+
+  // ═══════════════ WARMUP / CONDITIONING ═══════════════
+  {
+    id: "vitamins",
+    name: "Vitamins",
+    category: "Warmup",
+    duration: { min: 10, max: 15 },
+    difficulty: ["Beginner", "Intermediate", "Advanced", "Elite"],
+    ageRange: [11, 18],
+    players: "Full Team",
+    description:
+      "Goal: Be mindful of your movements. ½ way groups switch sides. Block Mount/OH Block to Trnst. Defensive Movements. Groups rotate through stations.",
+    setup:
+      "Split court into stations. Groups of 3-4 rotate through movement patterns.",
+    coachingPoints: [
+      "Be mindful of your movements",
+      "Block mount → OH block to transition",
+      "Defensive movement patterns",
+      "Groups switch halfway",
+    ],
+    tags: ["warmup", "movement", "conditioning", "dynamic"],
+    phase: "Warmup / Individual",
+  },
+  {
+    id: "pre-practice",
+    name: "Pre-Practice",
+    category: "Warmup",
+    duration: { min: 20, max: 30 },
+    difficulty: ["Beginner", "Intermediate", "Advanced", "Elite"],
+    ageRange: [11, 18],
+    players: "Full Team",
+    description:
+      "Block mount, passing warmup, defense/serving. Pepper, working 1 on 1 on ball control. General warmup before structured practice begins.",
+    setup:
+      "Full court available. Players in pairs or small groups. Open warmup format.",
+    coachingPoints: [
+      "Block mount and footwork patterns",
+      "Passing warmup — partner pepper",
+      "Defense and serving reps",
+      "Working 1-on-1 ball control",
+    ],
+    tags: ["warmup", "pre-practice", "ball control", "pepper"],
+    phase: "Warmup / Individual",
+  },
+  {
+    id: "split-court",
+    name: "Split Court Games",
+    category: "Warmup",
+    duration: { min: 10, max: 20 },
+    difficulty: ["Beginner", "Intermediate", "Advanced"],
+    ageRange: [11, 16],
+    players: "Groups of 4-6",
+    description:
+      "Half-court games to get touches and reps in a smaller space. Great for younger or developing teams to get more contacts per player.",
+    setup:
+      "Net divides the court. Play on half court — 3v3 or 2v2. Multiple games going simultaneously.",
+    coachingPoints: [
+      "More touches in less space",
+      "Communication is even more important",
+      "Move to the ball — no standing around",
+      "Compete on every ball",
+    ],
+    tags: ["warmup", "split court", "small-sided", "touches"],
+    phase: "Warmup / Individual",
+  },
+];
+
+// ─── CATEGORIES & PHASES ───
+const CATEGORIES = [...new Set(DRILLS.map((d) => d.category))];
+const PHASES = ["Warmup / Individual", "Skill Development", "Competitive"];
+const DIFFICULTIES = ["Beginner", "Intermediate", "Advanced", "Elite"];
+const AGE_GROUPS = [
+  { label: "11-12U", min: 11, max: 12 },
+  { label: "13-14U", min: 13, max: 14 },
+  { label: "15-16U", min: 15, max: 16 },
+  { label: "17-18U", min: 17, max: 18 },
+];
+
+// ─── SKILL PROBLEM MAPPING ───
+const SKILL_PROBLEMS = {
+  "My passers can't handle tough serves": {
+    drills: ["seam-serve-pass", "sr-passing-w-mb", "serve-seam-pass"],
+    handbook: ["passing"],
+    advice: "Start with Seam: Serve & Pass to build platform fundamentals, then progress to S/R Passing w/ MB to add game-like pressure.",
+  },
+  "We can't close out tight sets": {
+    drills: ["red-zone-ladder", "back-forth-11-11", "18-18-validate"],
+    handbook: ["eyework", "attacking"],
+    advice: "These drills simulate end-of-set pressure. Red Zone Ladder teaches decision-making at 20-25, while 18-18 Validate forces clutch execution.",
+  },
+  "Our hitters have no shot selection": {
+    drills: ["attacking-toolbox", "attack-school", "attacking-reps-w-block"],
+    handbook: ["attacking"],
+    advice: "Attacking Toolbox builds shot variety. Add a block with Attacking Reps w/ Block so hitters learn to read and adjust mid-air.",
+  },
+  "We struggle in transition": {
+    drills: ["6v6-transition-wash", "dig-run-through", "bsbh-eyework"],
+    handbook: ["attacking", "defense"],
+    advice: "6v6 Transition Wash forces quick transitions. Combine with Dig/Run-Through for defensive reps and B.S.B.H. to improve reading skills.",
+  },
+  "Our serves are inconsistent": {
+    drills: ["serve-speed-accuracy", "serve-seam-pass"],
+    handbook: ["serving"],
+    advice: "Serve: Speed & Accuracy with tracking builds accountability. Target 90% in, 80% zone, 70% seam. Record every serve!",
+  },
+  "We can't sideout efficiently": {
+    drills: ["6v6-side-out", "nevilles-rows", "5-before-3"],
+    handbook: ["passing", "attacking"],
+    advice: "Neville's Rows tracks sideout % by rotation so you know exactly where you're weak. 5 Before 3 adds intense pressure to sideout.",
+  },
+  "Our blockers aren't reading well": {
+    drills: ["bsbh-eyework", "blocking-work", "attacking-reps-w-block"],
+    handbook: ["blocking", "eyework"],
+    advice: "B.S.B.H. Eyework teaches peripheral vs. narrow vision. Blocking Work builds footwork. Then combine with live hitters.",
+  },
+  "We fall apart out of system": {
+    drills: ["6v6-out-of-system", "combine-6v6-oos", "oos-games-to-9"],
+    handbook: ["setting", "attacking"],
+    advice: "These three drills progressively train out-of-system play. Start with 6v6 OOS, then Combine for more pressure, then short games.",
+  },
+  "Our middles aren't involved enough": {
+    drills: ["attacking-tempo-reps", "mb-tournament", "nevilles-offensive"],
+    handbook: ["attacking", "blocking"],
+    advice: "Attacking Tempo Reps builds MB timing. MB Tournament gives them competitive reps. Neville's Offensive rewards MB kills with 5 points!",
+  },
+  "Players don't communicate": {
+    drills: ["seam-serve-pass", "exchange-4v4", "split-court"],
+    handbook: ["passing", "defense"],
+    advice: "Smaller-sided games force communication. Seam passing requires calling the ball. Start with Split Court for younger teams.",
+  },
+  "We need better warmups": {
+    drills: ["vitamins", "pre-practice", "serve-speed-accuracy"],
+    handbook: ["serving", "passing"],
+    advice: "Vitamins gets bodies moving with purpose. Pre-Practice adds ball control. Serve: Speed & Accuracy is a structured, trackable warmup.",
+  },
+  "Our team lacks competitive intensity": {
+    drills: ["red-zone-ladder", "18-18-validate", "back-forth-11-11"],
+    handbook: ["eyework", "defense"],
+    advice: "All three drills create high-pressure moments. Start every game at 11-11 or 18-18 so there's no time to coast.",
+  },
+  "Our setter needs to improve": {
+    drills: ["bsbh-eyework", "attacking-tempo-reps", "6v6-side-out"],
+    handbook: ["setting"],
+    advice: "Setting is about giving 'good swings' and making 'informed choices.' Focus on footwork, hand position, and reading the defense.",
+  },
+};
+
+// ─── COLORS (VCNebraska — light baby blue branding from logo) ───
+const VCN = {
+  navy: "#1B3A5C",
+  blue: "#8BB8D9",       // VCN primary baby blue from logo
+  darkBlue: "#5A9ABF",   // Slightly darker for contrast
+  lightBlue: "#A8CEE4",
+  skyBlue: "#E8F2F8",
+  paleBlue: "#F0F7FB",
+  white: "#FFFFFF",
+  gray: "#F5F7FA",
+  darkGray: "#374151",
+  accent: "#E8913A",
+  green: "#4A9B6E",
+  red: "#C0504D",
+};
+
+// ─── VCN LOGO (actual club logo from Sprocket Sports) ───
+const VCN_LOGO_URL = "https://ssprodst.blob.core.windows.net/logos/120/c5b182e6-b800-4a54-bb5f-adf04a7c1294-08-02-2023-12-42-59-565.jpg";
+const VCNLogo = ({ size = 48 }) => (
+  <img
+    src={VCN_LOGO_URL}
+    alt="VCNebraska"
+    style={{ height: size, width: "auto", objectFit: "contain" }}
+  />
+);
+
+// ─── ICONS (inline SVG components) ───
+const Icon = ({ type, size = 20, color = "currentColor" }) => {
+  const s = { width: size, height: size, fill: "none", stroke: color, strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" };
+  const icons = {
+    volleyball: <svg viewBox="0 0 24 24" style={{ width: size, height: size }}><circle cx="12" cy="12" r="10.5" fill="none" stroke={color} strokeWidth="1.5"/><path d="M12,1.5 C8,6 7,10 8,14 C9,18 12,22 12,22.5" fill="none" stroke={color} strokeWidth="1"/><path d="M12,1.5 C16,6 17,10 16,14 C15,18 12,22 12,22.5" fill="none" stroke={color} strokeWidth="1"/><path d="M2,8 C6,10 10,11 14,10.5 C18,10 22,8 22.5,7.5" fill="none" stroke={color} strokeWidth="1"/></svg>,
+    search: <svg viewBox="0 0 24 24" style={s}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
+    plus: <svg viewBox="0 0 24 24" style={s}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+    check: <svg viewBox="0 0 24 24" style={s}><polyline points="20,6 9,17 4,12"/></svg>,
+    clock: <svg viewBox="0 0 24 24" style={s}><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>,
+    users: <svg viewBox="0 0 24 24" style={s}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>,
+    zap: <svg viewBox="0 0 24 24" style={s}><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></svg>,
+    book: <svg viewBox="0 0 24 24" style={s}><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>,
+    clipboard: <svg viewBox="0 0 24 24" style={s}><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>,
+    help: <svg viewBox="0 0 24 24" style={s}><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+    x: <svg viewBox="0 0 24 24" style={s}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+    trash: <svg viewBox="0 0 24 24" style={s}><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>,
+    arrow: <svg viewBox="0 0 24 24" style={s}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>,
+    star: <svg viewBox="0 0 24 24" style={{...s, fill: color, stroke: color}}><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>,
+    download: <svg viewBox="0 0 24 24" style={s}><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>,
+    printer: <svg viewBox="0 0 24 24" style={s}><polyline points="6,9 6,2 18,2 18,9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>,
+    chevDown: <svg viewBox="0 0 24 24" style={s}><polyline points="6,9 12,15 18,9"/></svg>,
+    chevUp: <svg viewBox="0 0 24 24" style={s}><polyline points="18,15 12,9 6,15"/></svg>,
+    grip: <svg viewBox="0 0 24 24" style={s}><circle cx="9" cy="5" r="1" fill={color}/><circle cx="15" cy="5" r="1" fill={color}/><circle cx="9" cy="12" r="1" fill={color}/><circle cx="15" cy="12" r="1" fill={color}/><circle cx="9" cy="19" r="1" fill={color}/><circle cx="15" cy="19" r="1" fill={color}/></svg>,
+  };
+  return icons[type] || null;
+};
+
+// ─── DIFFICULTY BADGE ───
+const DiffBadge = ({ level }) => {
+  const colors = {
+    Beginner: { bg: "#E8F5EE", text: "#4A9B6E" },
+    Intermediate: { bg: "#E8F2F8", text: "#5A9ABF" },
+    Advanced: { bg: "#FFF3E0", text: "#C08040" },
+    Elite: { bg: "#F5E0E0", text: "#C0504D" },
+  };
+  const c = colors[level] || colors.Beginner;
+  return (
+    <span style={{ display: "inline-block", padding: "2px 8px", borderRadius: 12, fontSize: 11, fontWeight: 600, backgroundColor: c.bg, color: c.text, marginRight: 4, marginBottom: 2 }}>
+      {level}
+    </span>
+  );
+};
+
+// ─── CATEGORY BADGE ───
+const CatBadge = ({ category }) => {
+  const colors = {
+    Serving: "#5A9ABF",
+    Passing: "#4A9B6E",
+    "Eyework / Vision": "#7B6BA2",
+    Attacking: "#C0504D",
+    Blocking: "#C08040",
+    Defense: "#3A8F8F",
+    Competitive: "#E8913A",
+    Warmup: "#6B9B4A",
+  };
+  const c = colors[category] || VCN.blue;
+  return (
+    <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: 12, fontSize: 11, fontWeight: 700, backgroundColor: c, color: "#fff", letterSpacing: 0.5 }}>
+      {category}
+    </span>
+  );
+};
+
+// ─── Helper: get handbook sections relevant to a drill, filtered by level ───
+const getHandbookForDrill = (drill, levelFilter) => {
+  const hbKeys = DRILL_TO_HANDBOOK[drill.category] || [];
+  const levelOrder = { Beginner: 0, Intermediate: 1, Advanced: 2, Elite: 3 };
+  const maxLevel = Math.max(...drill.difficulty.map((d) => levelOrder[d] || 0));
+  return hbKeys.map((key) => {
+    const hb = HANDBOOK[key];
+    if (!hb) return null;
+    const filtered = levelFilter
+      ? hb.sections.filter((s) => levelOrder[s.level] <= maxLevel)
+      : hb.sections;
+    return { ...hb, sections: filtered, _key: key };
+  }).filter(Boolean);
+};
+
+// ─── DRILL CARD COMPONENT ───
+const DrillCard = ({ drill, onAdd, isInPlan, onRemove, expanded, onToggle, showHandbook = true }) => {
+  const handbookSections = expanded && showHandbook ? getHandbookForDrill(drill, true) : [];
+  return (
+  <div
+    style={{
+      background: VCN.white,
+      borderRadius: 12,
+      border: isInPlan ? `2px solid ${VCN.green}` : "1px solid #E0E0E0",
+      padding: 16,
+      marginBottom: 12,
+      cursor: "pointer",
+      transition: "all 0.2s",
+      boxShadow: expanded ? "0 4px 20px rgba(0,0,0,0.1)" : "0 1px 3px rgba(0,0,0,0.05)",
+    }}
+    onClick={onToggle}
+  >
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+      <div style={{ flex: 1 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" }}>
+          <CatBadge category={drill.category} />
+          {drill.difficulty.map((d) => <DiffBadge key={d} level={d} />)}
+        </div>
+        <h3 style={{ margin: "4px 0", fontSize: 17, fontWeight: 700, color: VCN.navy }}>{drill.name}</h3>
+        <div style={{ display: "flex", gap: 16, fontSize: 13, color: "#666", marginTop: 4, flexWrap: "wrap" }}>
+          <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <Icon type="clock" size={14} color="#999" /> {drill.duration.min}-{drill.duration.max} min
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <Icon type="users" size={14} color="#999" /> {drill.players}
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <Icon type="zap" size={14} color="#999" /> Ages {drill.ageRange[0]}-{drill.ageRange[1]}
+          </span>
+        </div>
+      </div>
+      <button
+        onClick={(e) => { e.stopPropagation(); isInPlan ? onRemove(drill.id) : onAdd(drill); }}
+        style={{
+          background: isInPlan ? VCN.red : VCN.blue,
+          color: "#fff",
+          border: "none",
+          borderRadius: 8,
+          padding: "8px 12px",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          gap: 4,
+          fontSize: 13,
+          fontWeight: 600,
+          whiteSpace: "nowrap",
+          flexShrink: 0,
+        }}
+      >
+        <Icon type={isInPlan ? "x" : "plus"} size={16} color="#fff" />
+        {isInPlan ? "Remove" : "Add to Plan"}
+      </button>
+    </div>
+
+    {expanded && (
+      <div style={{ marginTop: 16, borderTop: "1px solid #eee", paddingTop: 16 }}>
+        <p style={{ fontSize: 14, lineHeight: 1.6, color: "#444", margin: "0 0 12px" }}>{drill.description}</p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div>
+            <h4 style={{ fontSize: 13, fontWeight: 700, color: VCN.navy, margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.5 }}>Setup</h4>
+            <p style={{ fontSize: 13, lineHeight: 1.5, color: "#555", margin: 0 }}>{drill.setup}</p>
+          </div>
+          <div>
+            <h4 style={{ fontSize: 13, fontWeight: 700, color: VCN.navy, margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.5 }}>Coaching Points</h4>
+            <ul style={{ margin: 0, padding: "0 0 0 16px", fontSize: 13, lineHeight: 1.7, color: "#555" }}>
+              {drill.coachingPoints.map((p, i) => <li key={i}>{p}</li>)}
+            </ul>
+          </div>
+        </div>
+
+        {/* ── Key Words (cue card for coaches) ── */}
+        {handbookSections.length > 0 && (
+          <div style={{ marginTop: 16, display: "flex", flexWrap: "wrap", gap: 6 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: VCN.darkBlue, textTransform: "uppercase", letterSpacing: 0.5, marginRight: 4, alignSelf: "center" }}>Key Words:</span>
+            {handbookSections.flatMap((hb) => hb.keyWords || []).filter((v, i, a) => a.indexOf(v) === i).map((kw) => (
+              <span key={kw} style={{ display: "inline-block", padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600, background: VCN.skyBlue, color: VCN.navy, border: `1px solid ${VCN.lightBlue}` }}>
+                {kw}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* ── VCN Fundamentals (from Skill Handbook) ── */}
+        {handbookSections.length > 0 && (
+          <div style={{ marginTop: 16, background: VCN.paleBlue || VCN.skyBlue, borderRadius: 10, padding: 16, border: `1px solid ${VCN.lightBlue}` }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
+              <Icon type="book" size={14} color={VCN.darkBlue} />
+              <span style={{ fontSize: 12, fontWeight: 700, color: VCN.darkBlue, textTransform: "uppercase", letterSpacing: 0.5 }}>VCN Fundamentals</span>
+            </div>
+            {handbookSections.map((hb) => (
+              <div key={hb._key} style={{ marginBottom: 10 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: VCN.navy, marginBottom: 4 }}>{hb.title}</div>
+                <div style={{ fontSize: 12, color: "#555", marginBottom: 6, fontStyle: "italic" }}>
+                  {hb.principles.slice(0, 2).join(" · ")}
+                </div>
+                {hb.sections.slice(0, 3).map((sec) => (
+                  <div key={sec.title} style={{ marginBottom: 6, paddingLeft: 8, borderLeft: `2px solid ${VCN.lightBlue}` }}>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: VCN.navy }}>
+                      {sec.title} <DiffBadge level={sec.level} />
+                    </div>
+                    <ul style={{ margin: "2px 0 0", padding: "0 0 0 14px", fontSize: 12, lineHeight: 1.5, color: "#555" }}>
+                      {sec.keys.slice(0, 4).map((k, i) => <li key={i}>{k}</li>)}
+                      {sec.keys.length > 4 && <li style={{ color: "#999" }}>+ {sec.keys.length - 4} more...</li>}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+  );
+};
+
+// ─── PLAN ITEM ───
+const PlanItem = ({ item, index, onRemove, onDurationChange, onMoveUp, onMoveDown, isFirst, isLast }) => (
+  <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 12px", background: VCN.white, borderRadius: 8, marginBottom: 6, border: "1px solid #E0E0E0" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <button disabled={isFirst} onClick={() => onMoveUp(index)} style={{ background: "none", border: "none", cursor: isFirst ? "default" : "pointer", opacity: isFirst ? 0.3 : 1, padding: 0, lineHeight: 1 }}>
+        <Icon type="chevUp" size={14} color="#999" />
+      </button>
+      <button disabled={isLast} onClick={() => onMoveDown(index)} style={{ background: "none", border: "none", cursor: isLast ? "default" : "pointer", opacity: isLast ? 0.3 : 1, padding: 0, lineHeight: 1 }}>
+        <Icon type="chevDown" size={14} color="#999" />
+      </button>
+    </div>
+    <div style={{ width: 24, height: 24, borderRadius: "50%", background: VCN.blue, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
+      {index + 1}
+    </div>
+    <div style={{ flex: 1, minWidth: 0 }}>
+      <div style={{ fontSize: 14, fontWeight: 600, color: VCN.navy, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.drill.name}</div>
+      <div style={{ fontSize: 11, color: "#888" }}>{item.drill.category} · {item.drill.phase}</div>
+    </div>
+    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+      <input
+        type="number"
+        value={item.duration}
+        onChange={(e) => onDurationChange(index, parseInt(e.target.value) || 0)}
+        style={{ width: 44, padding: "4px 6px", border: "1px solid #ddd", borderRadius: 6, fontSize: 13, textAlign: "center" }}
+        min={1}
+        max={120}
+      />
+      <span style={{ fontSize: 12, color: "#888" }}>min</span>
+    </div>
+    <button onClick={() => onRemove(item.drill.id)} style={{ background: "none", border: "none", cursor: "pointer", padding: 4 }}>
+      <Icon type="trash" size={16} color={VCN.red} />
+    </button>
+  </div>
+);
+
+// ─── MAIN APP ───
+export default function VCNPracticePlanner() {
+  const [tab, setTab] = useState("library");
+  const [search, setSearch] = useState("");
+  const [catFilter, setCatFilter] = useState("All");
+  const [diffFilter, setDiffFilter] = useState("All");
+  const [ageFilter, setAgeFilter] = useState("All");
+  const [expandedId, setExpandedId] = useState(null);
+  const [plan, setPlan] = useState([]);
+  const [selectedProblem, setSelectedProblem] = useState(null);
+  const [practiceTitle, setPracticeTitle] = useState("");
+  const [practiceDate, setPracticeDate] = useState("");
+  const [practiceQuote, setPracticeQuote] = useState("");
+  const [teamName, setTeamName] = useState("");
+  const [handbookSkill, setHandbookSkill] = useState(null);
+  const [handbookLevelFilter, setHandbookLevelFilter] = useState("All");
+  const [printWithHandbook, setPrintWithHandbook] = useState(false);
+
+  // Filter drills
+  const filteredDrills = useMemo(() => {
+    return DRILLS.filter((d) => {
+      if (search) {
+        const q = search.toLowerCase();
+        const match = d.name.toLowerCase().includes(q) || d.description.toLowerCase().includes(q) || d.tags.some((t) => t.includes(q)) || d.category.toLowerCase().includes(q);
+        if (!match) return false;
+      }
+      if (catFilter !== "All" && d.category !== catFilter) return false;
+      if (diffFilter !== "All" && !d.difficulty.includes(diffFilter)) return false;
+      if (ageFilter !== "All") {
+        const ag = AGE_GROUPS.find((a) => a.label === ageFilter);
+        if (ag && (d.ageRange[1] < ag.min || d.ageRange[0] > ag.max)) return false;
+      }
+      return true;
+    });
+  }, [search, catFilter, diffFilter, ageFilter]);
+
+  const planIds = new Set(plan.map((p) => p.drill.id));
+  const totalMinutes = plan.reduce((s, p) => s + p.duration, 0);
+
+  const addToPlan = (drill) => {
+    if (!planIds.has(drill.id)) {
+      setPlan([...plan, { drill, duration: Math.round((drill.duration.min + drill.duration.max) / 2) }]);
+    }
+  };
+
+  const removeFromPlan = (id) => setPlan(plan.filter((p) => p.drill.id !== id));
+
+  const changeDuration = (idx, dur) => {
+    const next = [...plan];
+    next[idx] = { ...next[idx], duration: dur };
+    setPlan(next);
+  };
+
+  const moveUp = (idx) => {
+    if (idx === 0) return;
+    const next = [...plan];
+    [next[idx - 1], next[idx]] = [next[idx], next[idx - 1]];
+    setPlan(next);
+  };
+
+  const moveDown = (idx) => {
+    if (idx === plan.length - 1) return;
+    const next = [...plan];
+    [next[idx], next[idx + 1]] = [next[idx + 1], next[idx]];
+    setPlan(next);
+  };
+
+  const printPlan = () => {
+    const w = window.open("", "_blank");
+    const startTime = "4:00 PM";
+    let runningTime = 0;
+    const rows = plan.map((p, i) => {
+      const startMin = runningTime;
+      runningTime += p.duration;
+      return `<tr>
+        <td style="padding:8px 12px;border-bottom:1px solid #eee;font-weight:600;color:#1B3A5C">${i + 1}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #eee;font-weight:600;color:#1B3A5C">${p.drill.name}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #eee;color:#666">${p.drill.category}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:center">${p.duration} min</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #eee;color:#666;font-size:12px">${p.drill.coachingPoints.slice(0, 2).join("; ")}</td>
+      </tr>`;
+    }).join("");
+
+    w.document.write(`<!DOCTYPE html><html><head><title>VCN Practice Plan</title></head><body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:900px;margin:0 auto;padding:24px;color:#1B3A5C">
+      <div style="text-align:center;margin-bottom:24px;border-bottom:3px solid #8BB8D9;padding-bottom:16px">
+        <h1 style="margin:0;font-size:28px;color:#8BB8D9;letter-spacing:4px;font-weight:900">VCN</h1>
+        <p style="margin:2px 0 8px;font-size:10px;color:#8BB8D9;letter-spacing:3px;font-weight:600">VOLLEYBALL CLUB NEBRASKA</p>
+        <h2 style="margin:4px 0;font-size:18px;color:#1B3A5C;font-weight:400">${practiceTitle || "Practice Plan"}</h2>
+        ${teamName ? `<p style="margin:4px 0;font-size:14px;color:#666">${teamName}</p>` : ""}
+        ${practiceDate ? `<p style="margin:4px 0;font-size:14px;color:#666">${practiceDate}</p>` : ""}
+        ${practiceQuote ? `<p style="margin:8px 0;font-style:italic;color:#444;font-size:13px">"${practiceQuote}"</p>` : ""}
+      </div>
+      <div style="display:flex;gap:16px;margin-bottom:16px">
+        <div style="flex:1;background:#E8F2F8;padding:12px;border-radius:8px;text-align:center"><strong style="font-size:20px;color:#1B3A5C">${plan.length}</strong><br><span style="font-size:12px;color:#666">Drills</span></div>
+        <div style="flex:1;background:#E8F5EE;padding:12px;border-radius:8px;text-align:center"><strong style="font-size:20px;color:#1B3A5C">${totalMinutes}</strong><br><span style="font-size:12px;color:#666">Minutes</span></div>
+        <div style="flex:1;background:#FFF3E0;padding:12px;border-radius:8px;text-align:center"><strong style="font-size:20px;color:#1B3A5C">${Math.floor(totalMinutes / 60)}h ${totalMinutes % 60}m</strong><br><span style="font-size:12px;color:#666">Total Time</span></div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead><tr style="background:#1B3A5C;color:#fff">
+          <th style="padding:10px 12px;text-align:left">#</th>
+          <th style="padding:10px 12px;text-align:left">Drill</th>
+          <th style="padding:10px 12px;text-align:left">Category</th>
+          <th style="padding:10px 12px;text-align:center">Duration</th>
+          <th style="padding:10px 12px;text-align:left">Key Points</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div style="margin-top:24px;padding:16px;background:#F5F7FA;border-radius:8px">
+        <h3 style="margin:0 0 8px;font-size:14px;color:#1B3A5C">Concepts:</h3>
+        <p style="margin:0;font-size:13px;color:#555">Think Well → See Well → Communicate Well → Move Well</p>
+        <p style="margin:4px 0 0;font-size:13px;color:#555">E.P.E.D. = Every Play, Every Day | Let's get 1% better today</p>
+      </div>
+      ${printWithHandbook ? (() => {
+        const cats = [...new Set(plan.map((p) => p.drill.category))];
+        const hbKeys = [...new Set(cats.flatMap((c) => DRILL_TO_HANDBOOK[c] || []))];
+        return hbKeys.map((key) => {
+          const hb = HANDBOOK[key];
+          if (!hb) return "";
+          return '<div style="margin-top:24px;padding:16px;background:#E8F2F8;border-radius:8px;page-break-inside:avoid">' +
+            '<h3 style="margin:0 0 4px;font-size:16px;color:#1B3A5C">' + hb.title + ' Fundamentals</h3>' +
+            '<p style="margin:0 0 8px;font-size:12px;color:#555;font-style:italic">' + hb.principles.slice(0, 2).join(" · ") + '</p>' +
+            '<div style="margin-bottom:8px"><strong style="font-size:11px;color:#5A9ABF;letter-spacing:1px">KEY WORDS: </strong><span style="font-size:12px;color:#1B3A5C">' + hb.keyWords.join(" · ") + '</span></div>' +
+            hb.sections.map((sec) =>
+              '<div style="margin-bottom:8px;padding-left:10px;border-left:2px solid #8BB8D9">' +
+              '<strong style="font-size:12px;color:#1B3A5C">' + sec.title + '</strong> <span style="font-size:10px;padding:1px 6px;border-radius:8px;background:#E8F2F8;color:#5A9ABF">' + sec.level + '</span>' +
+              '<ul style="margin:2px 0 0;padding:0 0 0 14px;font-size:11px;line-height:1.6;color:#444">' +
+              sec.keys.slice(0, 4).map((k) => '<li>' + k + '</li>').join("") +
+              '</ul></div>'
+            ).join("") +
+            '</div>';
+        }).join("");
+      })() : ""}
+      <div style="text-align:center;margin-top:24px;font-size:11px;color:#999">VCNebraska Practice Plan Generator — Competitive Excellence</div>
+      <script>window.print();</script>
+    </body></html>`);
+    w.document.close();
+  };
+
+  // ─── TAB CONTENT ───
+  const renderLibrary = () => (
+    <div style={{ display: "flex", gap: 20 }}>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        {/* Search & Filters */}
+        <div style={{ background: VCN.white, borderRadius: 12, padding: 16, marginBottom: 16, border: "1px solid #E0E0E0" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+            <div style={{ position: "relative", flex: 1 }}>
+              <div style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)" }}>
+                <Icon type="search" size={16} color="#999" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search drills by name, skill, or keyword..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                style={{ width: "100%", boxSizing: "border-box", padding: "10px 12px 10px 34px", border: "1px solid #ddd", borderRadius: 8, fontSize: 14, outline: "none" }}
+              />
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <select value={catFilter} onChange={(e) => setCatFilter(e.target.value)} style={{ padding: "6px 10px", borderRadius: 8, border: "1px solid #ddd", fontSize: 13, background: VCN.white, cursor: "pointer" }}>
+              <option value="All">All Categories</option>
+              {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <select value={diffFilter} onChange={(e) => setDiffFilter(e.target.value)} style={{ padding: "6px 10px", borderRadius: 8, border: "1px solid #ddd", fontSize: 13, background: VCN.white, cursor: "pointer" }}>
+              <option value="All">All Levels</option>
+              {DIFFICULTIES.map((d) => <option key={d} value={d}>{d}</option>)}
+            </select>
+            <select value={ageFilter} onChange={(e) => setAgeFilter(e.target.value)} style={{ padding: "6px 10px", borderRadius: 8, border: "1px solid #ddd", fontSize: 13, background: VCN.white, cursor: "pointer" }}>
+              <option value="All">All Ages</option>
+              {AGE_GROUPS.map((a) => <option key={a.label} value={a.label}>{a.label}</option>)}
+            </select>
+          </div>
+        </div>
+
+        {/* Results count */}
+        <div style={{ fontSize: 13, color: "#888", marginBottom: 8 }}>
+          Showing {filteredDrills.length} of {DRILLS.length} drills
+        </div>
+
+        {/* Drill Cards */}
+        {filteredDrills.map((d) => (
+          <DrillCard
+            key={d.id}
+            drill={d}
+            onAdd={addToPlan}
+            isInPlan={planIds.has(d.id)}
+            onRemove={removeFromPlan}
+            expanded={expandedId === d.id}
+            onToggle={() => setExpandedId(expandedId === d.id ? null : d.id)}
+          />
+        ))}
+        {filteredDrills.length === 0 && (
+          <div style={{ textAlign: "center", padding: 40, color: "#999" }}>
+            <Icon type="search" size={40} color="#ccc" />
+            <p style={{ marginTop: 12 }}>No drills match your filters. Try adjusting your search.</p>
+          </div>
+        )}
+      </div>
+
+      {/* Mini Plan Sidebar */}
+      <div style={{ width: 280, flexShrink: 0 }}>
+        <div style={{ background: VCN.white, borderRadius: 12, padding: 16, border: "1px solid #E0E0E0", position: "sticky", top: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+            <Icon type="clipboard" size={18} color={VCN.blue} />
+            <h3 style={{ margin: 0, fontSize: 15, color: VCN.navy }}>Your Practice Plan</h3>
+          </div>
+          {plan.length === 0 ? (
+            <p style={{ fontSize: 13, color: "#999", textAlign: "center", padding: "20px 0" }}>
+              Add drills from the library to start building your practice plan
+            </p>
+          ) : (
+            <>
+              {plan.map((p, i) => (
+                <div key={p.drill.id} style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 0", borderBottom: "1px solid #f0f0f0", fontSize: 13 }}>
+                  <span style={{ width: 20, height: 20, borderRadius: "50%", background: VCN.blue, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, flexShrink: 0 }}>{i + 1}</span>
+                  <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: VCN.navy, fontWeight: 500 }}>{p.drill.name}</span>
+                  <span style={{ fontSize: 11, color: "#999" }}>{p.duration}m</span>
+                </div>
+              ))}
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12, padding: "8px 0", borderTop: "2px solid #eee", fontSize: 14, fontWeight: 700, color: VCN.navy }}>
+                <span>Total</span>
+                <span>{totalMinutes} min ({Math.floor(totalMinutes / 60)}h {totalMinutes % 60}m)</span>
+              </div>
+              <button
+                onClick={() => setTab("plan")}
+                style={{ width: "100%", marginTop: 8, padding: "10px", background: VCN.blue, color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer" }}
+              >
+                Edit Practice Plan →
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderCoach = () => (
+    <div style={{ maxWidth: 800, margin: "0 auto" }}>
+      <div style={{ textAlign: "center", marginBottom: 24 }}>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: VCN.skyBlue, padding: "8px 16px", borderRadius: 20, marginBottom: 12 }}>
+          <Icon type="help" size={18} color={VCN.blue} />
+          <span style={{ fontSize: 14, fontWeight: 600, color: VCN.blue }}>Coach's Assistant</span>
+        </div>
+        <h2 style={{ margin: "0 0 4px", fontSize: 22, color: VCN.navy }}>What does your team need help with?</h2>
+        <p style={{ fontSize: 14, color: "#888", margin: 0 }}>Select a challenge below, and we'll recommend the best drills for your team</p>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        {Object.keys(SKILL_PROBLEMS).map((problem) => (
+          <button
+            key={problem}
+            onClick={() => setSelectedProblem(selectedProblem === problem ? null : problem)}
+            style={{
+              background: selectedProblem === problem ? VCN.blue : VCN.white,
+              color: selectedProblem === problem ? "#fff" : VCN.navy,
+              border: selectedProblem === problem ? `2px solid ${VCN.blue}` : "1px solid #E0E0E0",
+              borderRadius: 12,
+              padding: "14px 16px",
+              fontSize: 14,
+              fontWeight: 500,
+              cursor: "pointer",
+              textAlign: "left",
+              transition: "all 0.2s",
+            }}
+          >
+            {problem}
+          </button>
+        ))}
+      </div>
+
+      {selectedProblem && (
+        <div style={{ marginTop: 24 }}>
+          {/* Handbook fundamentals for this problem */}
+          {SKILL_PROBLEMS[selectedProblem].handbook && (
+            <div style={{ background: VCN.paleBlue || VCN.skyBlue, borderRadius: 12, padding: 20, border: `1px solid ${VCN.lightBlue}`, marginBottom: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+                <Icon type="book" size={18} color={VCN.darkBlue} />
+                <h3 style={{ margin: 0, fontSize: 16, color: VCN.navy }}>What VCN Teaches</h3>
+              </div>
+              {SKILL_PROBLEMS[selectedProblem].handbook.map((hbKey) => {
+                const hb = HANDBOOK[hbKey];
+                if (!hb) return null;
+                return (
+                  <div key={hbKey} style={{ marginBottom: 12 }}>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: VCN.navy, marginBottom: 4 }}>{hb.title}</div>
+                    <div style={{ fontSize: 13, color: "#555", marginBottom: 8, fontStyle: "italic" }}>
+                      {hb.principles.slice(0, 3).join(" · ")}
+                    </div>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 8 }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: VCN.darkBlue, alignSelf: "center", marginRight: 4 }}>KEY WORDS:</span>
+                      {hb.keyWords.map((kw) => (
+                        <span key={kw} style={{ padding: "2px 8px", borderRadius: 12, fontSize: 11, fontWeight: 600, background: VCN.white, color: VCN.navy, border: `1px solid ${VCN.lightBlue}` }}>{kw}</span>
+                      ))}
+                    </div>
+                    {hb.sections.slice(0, 2).map((sec) => (
+                      <div key={sec.title} style={{ paddingLeft: 10, borderLeft: `2px solid ${VCN.lightBlue}`, marginBottom: 6 }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: VCN.navy }}>{sec.title} <DiffBadge level={sec.level} /></div>
+                        <ul style={{ margin: "2px 0 0", padding: "0 0 0 14px", fontSize: 12, lineHeight: 1.5, color: "#555" }}>
+                          {sec.keys.slice(0, 3).map((k, i) => <li key={i}>{k}</li>)}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          <div style={{ background: VCN.skyBlue, borderRadius: 12, padding: 20, border: `1px solid ${VCN.lightBlue}` }}>
+            <h3 style={{ margin: "0 0 8px", fontSize: 16, color: VCN.navy }}>
+              <Icon type="zap" size={18} color={VCN.accent} /> Recommended Approach
+            </h3>
+            <p style={{ fontSize: 14, lineHeight: 1.6, color: "#444", margin: "0 0 16px" }}>
+              {SKILL_PROBLEMS[selectedProblem].advice}
+            </p>
+            <h4 style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 700, color: VCN.navy, textTransform: "uppercase", letterSpacing: 0.5 }}>
+              Recommended Drills
+            </h4>
+            {SKILL_PROBLEMS[selectedProblem].drills.map((drillId) => {
+              const drill = DRILLS.find((d) => d.id === drillId);
+              if (!drill) return null;
+              return (
+                <DrillCard
+                  key={drill.id}
+                  drill={drill}
+                  onAdd={addToPlan}
+                  isInPlan={planIds.has(drill.id)}
+                  onRemove={removeFromPlan}
+                  expanded={expandedId === drill.id}
+                  onToggle={() => setExpandedId(expandedId === drill.id ? null : drill.id)}
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  // ─── SKILL HANDBOOK TAB ───
+  const renderHandbook = () => {
+    const levelOrder = { Beginner: 0, Intermediate: 1, Advanced: 2, Elite: 3 };
+    const hbEntries = Object.entries(HANDBOOK);
+    const selectedHb = handbookSkill ? HANDBOOK[handbookSkill] : null;
+
+    return (
+      <div style={{ maxWidth: 900, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: VCN.skyBlue, padding: "8px 16px", borderRadius: 20, marginBottom: 12 }}>
+            <Icon type="book" size={18} color={VCN.blue} />
+            <span style={{ fontSize: 14, fontWeight: 600, color: VCN.blue }}>VCN Skill Handbook</span>
+          </div>
+          <h2 style={{ margin: "0 0 4px", fontSize: 22, color: VCN.navy }}>VCNebraska Fundamentals</h2>
+          <p style={{ fontSize: 13, color: "#888", margin: 0, fontStyle: "italic" }}>
+            "It's not what you look at, but what you see" · "Excellence is achieved by the mastery of Fundamentals"
+          </p>
+        </div>
+
+        {/* Level filter */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 20 }}>
+          <span style={{ fontSize: 13, color: "#666", alignSelf: "center" }}>Show content for:</span>
+          {["All", ...DIFFICULTIES].map((lvl) => (
+            <button
+              key={lvl}
+              onClick={() => setHandbookLevelFilter(lvl)}
+              style={{
+                padding: "6px 14px", borderRadius: 20, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none",
+                background: handbookLevelFilter === lvl ? VCN.blue : VCN.white,
+                color: handbookLevelFilter === lvl ? "#fff" : VCN.navy,
+                boxShadow: handbookLevelFilter === lvl ? "none" : "0 1px 3px rgba(0,0,0,0.1)",
+              }}
+            >
+              {lvl}
+            </button>
+          ))}
+        </div>
+
+        {/* Skill selector */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 10, marginBottom: 24 }}>
+          {hbEntries.map(([key, hb]) => (
+            <button
+              key={key}
+              onClick={() => setHandbookSkill(handbookSkill === key ? null : key)}
+              style={{
+                padding: "16px 12px", borderRadius: 12, border: handbookSkill === key ? `2px solid ${VCN.blue}` : "1px solid #E0E0E0",
+                background: handbookSkill === key ? VCN.skyBlue : VCN.white,
+                cursor: "pointer", textAlign: "center", transition: "all 0.2s",
+              }}
+            >
+              <Icon type={hb.icon} size={24} color={handbookSkill === key ? VCN.blue : VCN.lightBlue} />
+              <div style={{ marginTop: 6, fontSize: 13, fontWeight: 700, color: VCN.navy }}>{hb.title}</div>
+              <div style={{ fontSize: 11, color: "#999" }}>{hb.sections.length} topics</div>
+            </button>
+          ))}
+        </div>
+
+        {/* Selected skill content */}
+        {selectedHb && (
+          <div style={{ background: VCN.white, borderRadius: 12, padding: 24, border: "1px solid #E0E0E0" }}>
+            <h3 style={{ margin: "0 0 4px", fontSize: 20, color: VCN.navy }}>{selectedHb.title}</h3>
+
+            {/* Principles */}
+            <div style={{ marginBottom: 20, padding: 16, background: VCN.skyBlue, borderRadius: 10 }}>
+              <h4 style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 700, color: VCN.darkBlue, textTransform: "uppercase", letterSpacing: 0.5 }}>Principles</h4>
+              {selectedHb.principles.map((p, i) => (
+                <div key={i} style={{ fontSize: 14, lineHeight: 1.6, color: "#444", padding: "2px 0" }}>• {p}</div>
+              ))}
+            </div>
+
+            {/* Key Words */}
+            <div style={{ marginBottom: 20, display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center" }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: VCN.darkBlue, textTransform: "uppercase", letterSpacing: 0.5, marginRight: 4 }}>Key Words:</span>
+              {selectedHb.keyWords.map((kw) => (
+                <span key={kw} style={{ padding: "4px 12px", borderRadius: 20, fontSize: 12, fontWeight: 600, background: VCN.navy, color: "#fff" }}>{kw}</span>
+              ))}
+            </div>
+
+            {/* Sections filtered by level */}
+            {selectedHb.sections
+              .filter((sec) => handbookLevelFilter === "All" || levelOrder[sec.level] <= levelOrder[handbookLevelFilter])
+              .map((sec) => (
+              <div key={sec.title} style={{ marginBottom: 16, padding: 16, borderRadius: 10, border: `1px solid ${VCN.skyBlue}`, background: "#FAFCFE" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                  <h4 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: VCN.navy }}>{sec.title}</h4>
+                  <DiffBadge level={sec.level} />
+                </div>
+                <ul style={{ margin: 0, padding: "0 0 0 18px", fontSize: 13, lineHeight: 1.8, color: "#444" }}>
+                  {sec.keys.map((k, i) => <li key={i}>{k}</li>)}
+                </ul>
+              </div>
+            ))}
+
+            {/* Related drills */}
+            <div style={{ marginTop: 20, paddingTop: 16, borderTop: `2px solid ${VCN.skyBlue}` }}>
+              <h4 style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 700, color: VCN.darkBlue, textTransform: "uppercase", letterSpacing: 0.5 }}>
+                Related Drills
+              </h4>
+              {DRILLS.filter((d) => (DRILL_TO_HANDBOOK[d.category] || []).includes(handbookSkill)).slice(0, 5).map((d) => (
+                <div key={d.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #f0f0f0" }}>
+                  <div>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: VCN.navy }}>{d.name}</span>
+                    <span style={{ fontSize: 12, color: "#999", marginLeft: 8 }}>{d.duration.min}-{d.duration.max} min</span>
+                  </div>
+                  <button
+                    onClick={() => { addToPlan(d); }}
+                    disabled={planIds.has(d.id)}
+                    style={{ padding: "4px 12px", borderRadius: 6, border: "none", background: planIds.has(d.id) ? "#ddd" : VCN.blue, color: planIds.has(d.id) ? "#999" : "#fff", fontSize: 12, fontWeight: 600, cursor: planIds.has(d.id) ? "default" : "pointer" }}
+                  >
+                    {planIds.has(d.id) ? "In Plan" : "Add"}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {!selectedHb && (
+          <div style={{ textAlign: "center", padding: 40, color: "#999" }}>
+            <Icon type="book" size={48} color="#ddd" />
+            <p style={{ marginTop: 12, fontSize: 14 }}>Select a skill above to view VCN's teaching fundamentals</p>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderPlan = () => (
+    <div style={{ maxWidth: 800, margin: "0 auto" }}>
+      {/* Practice Details */}
+      <div style={{ background: VCN.white, borderRadius: 12, padding: 20, marginBottom: 16, border: "1px solid #E0E0E0" }}>
+        <h3 style={{ margin: "0 0 12px", fontSize: 16, color: VCN.navy }}>Practice Details</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <input
+            placeholder="Practice Title (e.g. Practice #1)"
+            value={practiceTitle}
+            onChange={(e) => setPracticeTitle(e.target.value)}
+            style={{ padding: "10px 12px", border: "1px solid #ddd", borderRadius: 8, fontSize: 14, outline: "none" }}
+          />
+          <input
+            placeholder="Team Name (e.g. 17 Elite)"
+            value={teamName}
+            onChange={(e) => setTeamName(e.target.value)}
+            style={{ padding: "10px 12px", border: "1px solid #ddd", borderRadius: 8, fontSize: 14, outline: "none" }}
+          />
+          <input
+            type="date"
+            value={practiceDate}
+            onChange={(e) => setPracticeDate(e.target.value)}
+            style={{ padding: "10px 12px", border: "1px solid #ddd", borderRadius: 8, fontSize: 14, outline: "none" }}
+          />
+          <input
+            placeholder='Quote / Theme for the day'
+            value={practiceQuote}
+            onChange={(e) => setPracticeQuote(e.target.value)}
+            style={{ padding: "10px 12px", border: "1px solid #ddd", borderRadius: 8, fontSize: 14, outline: "none" }}
+          />
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+        <div style={{ flex: 1, background: VCN.skyBlue, borderRadius: 12, padding: 16, textAlign: "center" }}>
+          <div style={{ fontSize: 28, fontWeight: 700, color: VCN.blue }}>{plan.length}</div>
+          <div style={{ fontSize: 12, color: "#666" }}>Drills</div>
+        </div>
+        <div style={{ flex: 1, background: "#E8F5E9", borderRadius: 12, padding: 16, textAlign: "center" }}>
+          <div style={{ fontSize: 28, fontWeight: 700, color: VCN.green }}>{totalMinutes}</div>
+          <div style={{ fontSize: 12, color: "#666" }}>Total Minutes</div>
+        </div>
+        <div style={{ flex: 1, background: "#FFF3E0", borderRadius: 12, padding: 16, textAlign: "center" }}>
+          <div style={{ fontSize: 28, fontWeight: 700, color: VCN.accent }}>{Math.floor(totalMinutes / 60)}h {totalMinutes % 60}m</div>
+          <div style={{ fontSize: 12, color: "#666" }}>Practice Length</div>
+        </div>
+      </div>
+
+      {/* Drill Order */}
+      <div style={{ background: VCN.white, borderRadius: 12, padding: 20, border: "1px solid #E0E0E0" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+          <h3 style={{ margin: 0, fontSize: 16, color: VCN.navy }}>Practice Order</h3>
+          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#666", cursor: "pointer" }}>
+              <input type="checkbox" checked={printWithHandbook} onChange={(e) => setPrintWithHandbook(e.target.checked)} style={{ cursor: "pointer" }} />
+              Include fundamentals
+            </label>
+            <button
+              onClick={printPlan}
+              disabled={plan.length === 0}
+              style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 16px", background: plan.length > 0 ? VCN.navy : "#ccc", color: "#fff", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: plan.length > 0 ? "pointer" : "default" }}
+            >
+              <Icon type="printer" size={16} color="#fff" /> Print Plan
+            </button>
+          </div>
+        </div>
+
+        {plan.length === 0 ? (
+          <div style={{ textAlign: "center", padding: 40 }}>
+            <Icon type="clipboard" size={48} color="#ddd" />
+            <p style={{ color: "#999", fontSize: 14, marginTop: 12 }}>No drills added yet. Go to the Drill Library to add drills!</p>
+            <button
+              onClick={() => setTab("library")}
+              style={{ marginTop: 8, padding: "10px 20px", background: VCN.blue, color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer" }}
+            >
+              Browse Drill Library
+            </button>
+          </div>
+        ) : (
+          <>
+            {/* Phase grouping hints */}
+            {PHASES.map((phase) => {
+              const phaseDrills = plan.filter((p) => p.drill.phase === phase);
+              if (phaseDrills.length === 0) return null;
+              return (
+                <div key={phase} style={{ marginBottom: 16 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: VCN.blue, marginBottom: 6, padding: "4px 0", borderBottom: `2px solid ${VCN.skyBlue}` }}>
+                    {phase}
+                  </div>
+                </div>
+              );
+            })}
+
+            {plan.map((item, i) => (
+              <PlanItem
+                key={item.drill.id}
+                item={item}
+                index={i}
+                onRemove={removeFromPlan}
+                onDurationChange={changeDuration}
+                onMoveUp={moveUp}
+                onMoveDown={moveDown}
+                isFirst={i === 0}
+                isLast={i === plan.length - 1}
+              />
+            ))}
+
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16, padding: "12px 0", borderTop: "2px solid #eee" }}>
+              <span style={{ fontSize: 15, fontWeight: 700, color: VCN.navy }}>Total Practice Time</span>
+              <span style={{ fontSize: 15, fontWeight: 700, color: VCN.blue }}>{totalMinutes} min ({Math.floor(totalMinutes / 60)}h {totalMinutes % 60}m)</span>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* VCN Concepts reminder */}
+      <div style={{ marginTop: 16, background: VCN.navy, borderRadius: 12, padding: 20, color: "#fff" }}>
+        <h4 style={{ margin: "0 0 8px", fontSize: 14, color: VCN.blue }}>VCN Coaching Concepts</h4>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, fontSize: 13 }}>
+          <div>Think Well → See Well → Communicate Well → Move Well</div>
+          <div>E.P.E.D. = Every Play, Every Day</div>
+          <div>Competitive Excellence — 1% better today</div>
+          <div>Thoughts are tools. Do they serve you well?</div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{ minHeight: "100vh", background: VCN.gray, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
+      {/* Header */}
+      <div style={{ background: VCN.white, padding: "16px 24px", boxShadow: "0 2px 8px rgba(139,184,217,0.2)", borderBottom: `3px solid ${VCN.blue}` }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              <VCNLogo size={36} />
+              <div style={{ borderLeft: `2px solid ${VCN.skyBlue}`, paddingLeft: 16 }}>
+                <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: VCN.navy, letterSpacing: 0.5 }}>Practice Plan Generator</p>
+                <p style={{ margin: 0, fontSize: 11, color: VCN.darkBlue }}>Competitive Excellence</p>
+              </div>
+            </div>
+            {plan.length > 0 && (
+              <div style={{ background: VCN.skyBlue, borderRadius: 8, padding: "6px 12px", display: "flex", alignItems: "center", gap: 6 }}>
+                <Icon type="clipboard" size={14} color={VCN.darkBlue} />
+                <span style={{ color: VCN.navy, fontSize: 13, fontWeight: 600 }}>{plan.length} drills · {totalMinutes} min</span>
+              </div>
+            )}
+          </div>
+
+          {/* Tabs */}
+          <div style={{ display: "flex", gap: 2, marginTop: 16 }}>
+            {[
+              { id: "library", label: "Drill Library", icon: "book" },
+              { id: "handbook", label: "Skill Handbook", icon: "star" },
+              { id: "coach", label: "Coach's Assistant", icon: "help" },
+              { id: "plan", label: "Practice Plan", icon: "clipboard" },
+            ].map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  padding: "10px 18px",
+                  background: tab === t.id ? VCN.skyBlue : "transparent",
+                  color: tab === t.id ? VCN.navy : VCN.darkBlue,
+                  border: tab === t.id ? `1px solid ${VCN.blue}` : "1px solid transparent",
+                  borderBottom: tab === t.id ? `2px solid ${VCN.blue}` : "2px solid transparent",
+                  borderRadius: "8px 8px 0 0",
+                  fontSize: 14,
+                  fontWeight: tab === t.id ? 700 : 500,
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                }}
+              >
+                <Icon type={t.icon} size={16} color={tab === t.id ? VCN.blue : VCN.lightBlue} />
+                {t.label}
+                {t.id === "plan" && plan.length > 0 && (
+                  <span style={{ background: VCN.blue, color: "#fff", borderRadius: 10, padding: "1px 7px", fontSize: 11, fontWeight: 700, marginLeft: 2 }}>
+                    {plan.length}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: 20 }}>
+        {tab === "library" && renderLibrary()}
+        {tab === "coach" && renderCoach()}
+        {tab === "handbook" && renderHandbook()}
+        {tab === "plan" && renderPlan()}
+      </div>
+
+      {/* Footer */}
+      <div style={{ textAlign: "center", padding: "20px 0 30px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 4 }}>
+          <Icon type="volleyball" size={14} color={VCN.lightBlue} />
+          <span style={{ fontSize: 12, color: VCN.lightBlue, fontWeight: 600, letterSpacing: 1 }}>VCNebraska</span>
+          <Icon type="volleyball" size={14} color={VCN.lightBlue} />
+        </div>
+        <div style={{ fontSize: 11, color: "#bbb" }}>
+          Practice Plan Generator · Competitive Excellence · Let's get 1% better today
+        </div>
+      </div>
+    </div>
+  );
+}
