@@ -1858,19 +1858,25 @@ function VCNPracticePlanner() {
             </div>
 
             {/* Sections filtered by level */}
-            {selectedHb.sections
-              .filter((sec) => handbookLevelFilter === "All" || levelOrder[sec.level] <= levelOrder[handbookLevelFilter])
-              .map((sec) => (
-              <div key={sec.title} style={{ marginBottom: 16, padding: 16, borderRadius: 10, border: `1px solid ${VCN.skyBlue}`, background: "#FAFCFE" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-                  <h4 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: VCN.navy }}>{sec.title}</h4>
-                  <DiffBadge level={sec.level} />
+            {(() => {
+              const filtered = selectedHb.sections.filter((sec) => handbookLevelFilter === "All" || sec.level === handbookLevelFilter);
+              if (filtered.length === 0) return (
+                <div style={{ textAlign: "center", padding: 24, color: "#999", fontSize: 13 }}>
+                  No {handbookLevelFilter}-level content for {selectedHb.title}. Try a different level or select "All".
                 </div>
-                <ul style={{ margin: 0, padding: "0 0 0 18px", fontSize: 13, lineHeight: 1.8, color: "#444" }}>
-                  {sec.keys.map((k, i) => <li key={i}>{k}</li>)}
-                </ul>
-              </div>
-            ))}
+              );
+              return filtered.map((sec) => (
+                <div key={sec.title} style={{ marginBottom: 16, padding: 16, borderRadius: 10, border: `1px solid ${VCN.skyBlue}`, background: "#FAFCFE" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                    <h4 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: VCN.navy }}>{sec.title}</h4>
+                    <DiffBadge level={sec.level} />
+                  </div>
+                  <ul style={{ margin: 0, padding: "0 0 0 18px", fontSize: 13, lineHeight: 1.8, color: "#444" }}>
+                    {sec.keys.map((k, i) => <li key={i}>{k}</li>)}
+                  </ul>
+                </div>
+              ));
+            })()}
 
             {/* Related drills */}
             <div style={{ marginTop: 20, paddingTop: 16, borderTop: `2px solid ${VCN.skyBlue}` }}>
