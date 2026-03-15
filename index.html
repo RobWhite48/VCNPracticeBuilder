@@ -471,28 +471,6 @@ const DRILLS = [
     tags: ["serve", "accuracy", "tracking", "accountability", "routine"],
     phase: "Warmup / Individual",
   },
-  {
-    id: "serve-seam-pass",
-    name: "Serve Seam & Pass",
-    category: "Serving",
-    duration: { min: 10, max: 16 },
-    difficulty: ["Intermediate", "Advanced", "Elite"],
-    ageRange: [13, 18],
-    players: "Full Team (split)",
-    description:
-      "Servers target seams between passers. Passers work on seam communication and ownership. Rotate servers and passers.",
-    setup:
-      "Full court. 3-4 servers on one side, 3 passers in serve receive formation on the other. Setter at target.",
-    coachingPoints: [
-      "Servers: Target the seams between passers",
-      "Passers: Call the ball early, communicate ownership",
-      "Organize platform early",
-      "Play through your angle",
-    ],
-    tags: ["serve", "passing", "seam", "communication"],
-    phase: "Warmup / Individual",
-  },
-
   // ═══════════════ PASSING / SERVE RECEIVE ═══════════════
   {
     id: "seam-serve-pass",
@@ -503,17 +481,18 @@ const DRILLS = [
     ageRange: [11, 18],
     players: "Full Team",
     description:
-      "Face where ball is coming from, angle platform to target. See server contact, Direction of ball (organize platform early). Forward and Balanced at moment of contact.",
+      "Servers target seams between passers. Face where ball is coming from, angle platform to target. See server contact, Direction of ball (organize platform early). Forward and Balanced at moment of contact.",
     setup:
-      "Full court. Servers on one end, passers in serve receive formation. Setter at net as target. Rotate groups through.",
+      "Full court. Servers on one end, passers in serve receive formation. Setter at net as target. Rotate servers and passers through.",
     coachingPoints: [
       "Face where ball is coming from, angle platform to target",
       "See the server (Toss, Contact)",
-      "Look at flight of ball, call it",
+      "Servers: Target the seams between passers",
+      "Passers: Call the ball early, communicate ownership",
       "Organize platform early",
       "Forward & balanced at contact",
     ],
-    tags: ["passing", "serve receive", "platform", "fundamentals"],
+    tags: ["passing", "serve receive", "platform", "fundamentals", "seam", "communication"],
     phase: "Warmup / Individual",
   },
   {
@@ -593,13 +572,14 @@ const DRILLS = [
     ageRange: [15, 18],
     players: "Full Team",
     description:
-      "Working on timing and tempo of attack. 1st tempo: GO/B - Br, 30. 2nd tempo: Set/A, Sc. Focus on matching the setter's rhythm and hitting at different speeds.",
+      "Working on timing and tempo of attack. Set types: Go, B, 30, A, Jet, Slide. Focus on matching the setter's rhythm and hitting at different speeds across all tempo options.",
     setup:
       "Full court. Setter at net. MBs and OHs run tempo approaches. Coach initiates with a pass or free ball.",
     coachingPoints: [
-      "1st tempo: be in the air when setter contacts ball",
-      "2nd tempo: leave on the set",
-      "Match the setter's rhythm",
+      "Set types: Go, B, 30, A, Jet, Slide",
+      "1st tempo (Go, B): be in the air when setter contacts ball",
+      "2nd tempo (A, 30): leave on the set",
+      "Match the setter's rhythm across all tempos",
       "Arm swing timing is everything",
     ],
     tags: ["attacking", "tempo", "timing", "middle blocker", "setter connection"],
@@ -972,49 +952,8 @@ const DRILLS = [
     phase: "Competitive",
   },
   {
-    id: "mb-tournament",
-    name: "MB Tournament",
-    category: "Competitive",
-    duration: { min: 15, max: 25 },
-    difficulty: ["Advanced", "Elite"],
-    ageRange: [15, 18],
-    players: "Full Team",
-    description:
-      "Middle blocker focused competitive drill. MBs compete in various scenarios — quick attacks, slides, blocking matchups. Track MB performance across different situations.",
-    setup:
-      "Full court. MB-focused rotations. Score MB kills, blocks, and efficiency.",
-    coachingPoints: [
-      "MBs compete against each other",
-      "Quick attack timing and execution",
-      "Blocking matchups and reads",
-      "Track performance — accountability",
-    ],
-    tags: ["competitive", "middle blocker", "tournament", "position-specific"],
-    phase: "Competitive",
-  },
-  {
-    id: "straight-play-5pt",
-    name: "Straight Play 5pt Sets",
-    category: "Competitive",
-    duration: { min: 15, max: 25 },
-    difficulty: ["Intermediate", "Advanced", "Elite"],
-    ageRange: [13, 18],
-    players: "12+ (two full teams)",
-    description:
-      "Play straight sets to 5 points. Quick competitive sets that force urgency and intensity from the start. Rotate after each set.",
-    setup:
-      "Full court 6v6. Play multiple short sets to 5 points. Track wins per rotation.",
-    coachingPoints: [
-      "Every point matters — no time to recover",
-      "Start fast, play with urgency",
-      "Rotate through all rotations",
-    ],
-    tags: ["competitive", "short sets", "urgency", "game-like"],
-    phase: "Competitive",
-  },
-  {
     id: "combine-6v6-oos",
-    name: "Combine 6v6 Out of System",
+    name: "6v6 Out of System (Combine)",
     category: "Competitive",
     duration: { min: 20, max: 30 },
     difficulty: ["Advanced", "Elite"],
@@ -1056,48 +995,6 @@ const DRILLS = [
     tags: ["warmup", "movement", "conditioning", "dynamic"],
     phase: "Warmup / Individual",
   },
-  {
-    id: "pre-practice",
-    name: "Pre-Practice",
-    category: "Warmup",
-    duration: { min: 20, max: 30 },
-    difficulty: ["Beginner", "Intermediate", "Advanced", "Elite"],
-    ageRange: [11, 18],
-    players: "Full Team",
-    description:
-      "Block mount, passing warmup, defense/serving. Pepper, working 1 on 1 on ball control. General warmup before structured practice begins.",
-    setup:
-      "Full court available. Players in pairs or small groups. Open warmup format.",
-    coachingPoints: [
-      "Block mount and footwork patterns",
-      "Passing warmup — partner pepper",
-      "Defense and serving reps",
-      "Working 1-on-1 ball control",
-    ],
-    tags: ["warmup", "pre-practice", "ball control", "pepper"],
-    phase: "Warmup / Individual",
-  },
-  {
-    id: "split-court",
-    name: "Split Court Games",
-    category: "Warmup",
-    duration: { min: 10, max: 20 },
-    difficulty: ["Beginner", "Intermediate", "Advanced"],
-    ageRange: [11, 16],
-    players: "Groups of 4-6",
-    description:
-      "Half-court games to get touches and reps in a smaller space. Great for younger or developing teams to get more contacts per player.",
-    setup:
-      "Net divides the court. Play on half court — 3v3 or 2v2. Multiple games going simultaneously.",
-    coachingPoints: [
-      "More touches in less space",
-      "Communication is even more important",
-      "Move to the ball — no standing around",
-      "Compete on every ball",
-    ],
-    tags: ["warmup", "split court", "small-sided", "touches"],
-    phase: "Warmup / Individual",
-  },
 ];
 
 // ─── CATEGORIES & PHASES ───
@@ -1114,7 +1011,7 @@ const AGE_GROUPS = [
 // ─── SKILL PROBLEM MAPPING ───
 const SKILL_PROBLEMS = {
   "My passers can't handle tough serves": {
-    drills: ["seam-serve-pass", "sr-passing-w-mb", "serve-seam-pass"],
+    drills: ["seam-serve-pass", "sr-passing-w-mb"],
     handbook: ["passing"],
     advice: "Start with Seam: Serve & Pass to build platform fundamentals, then progress to S/R Passing w/ MB to add game-like pressure.",
   },
@@ -1134,7 +1031,7 @@ const SKILL_PROBLEMS = {
     advice: "6v6 Transition Wash forces quick transitions. Combine with Dig/Run-Through for defensive reps and B.S.B.H. to improve reading skills.",
   },
   "Our serves are inconsistent": {
-    drills: ["serve-speed-accuracy", "serve-seam-pass"],
+    drills: ["serve-speed-accuracy", "seam-serve-pass"],
     handbook: ["serving"],
     advice: "Serve: Speed & Accuracy with tracking builds accountability. Target 90% in, 80% zone, 70% seam. Record every serve!",
   },
@@ -1154,17 +1051,17 @@ const SKILL_PROBLEMS = {
     advice: "These three drills progressively train out-of-system play. Start with 6v6 OOS, then Combine for more pressure, then short games.",
   },
   "Our middles aren't involved enough": {
-    drills: ["attacking-tempo-reps", "mb-tournament", "nevilles-offensive"],
+    drills: ["attacking-tempo-reps", "nevilles-offensive"],
     handbook: ["attacking", "blocking"],
     advice: "Attacking Tempo Reps builds MB timing. MB Tournament gives them competitive reps. Neville's Offensive rewards MB kills with 5 points!",
   },
   "Players don't communicate": {
-    drills: ["seam-serve-pass", "exchange-4v4", "split-court"],
+    drills: ["seam-serve-pass", "exchange-4v4"],
     handbook: ["passing", "defense"],
     advice: "Smaller-sided games force communication. Seam passing requires calling the ball. Start with Split Court for younger teams.",
   },
   "We need better warmups": {
-    drills: ["vitamins", "pre-practice", "serve-speed-accuracy"],
+    drills: ["vitamins", "serve-speed-accuracy"],
     handbook: ["serving", "passing"],
     advice: "Vitamins gets bodies moving with purpose. Pre-Practice adds ball control. Serve: Speed & Accuracy is a structured, trackable warmup.",
   },
@@ -1507,74 +1404,65 @@ function VCNPracticePlanner() {
     setPlan(next);
   };
 
-  const printPlan = () => {
+  const savePlanAsPDF = () => {
     const w = window.open("", "_blank");
-    const startTime = "4:00 PM";
-    let runningTime = 0;
-    const rows = plan.map((p, i) => {
-      const startMin = runningTime;
-      runningTime += p.duration;
-      return `<tr>
-        <td style="padding:8px 12px;border-bottom:1px solid #eee;font-weight:600;color:#1B3A5C">${i + 1}</td>
-        <td style="padding:8px 12px;border-bottom:1px solid #eee;font-weight:600;color:#1B3A5C">${p.drill.name}</td>
-        <td style="padding:8px 12px;border-bottom:1px solid #eee;color:#666">${p.drill.category}</td>
-        <td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:center">${p.duration} min</td>
-        <td style="padding:8px 12px;border-bottom:1px solid #eee;color:#666;font-size:12px">${p.drill.coachingPoints.slice(0, 2).join("; ")}</td>
-      </tr>`;
+    const drillCards = plan.map((p, i) => {
+      const coachingPts = p.drill.coachingPoints.map((pt) => '<li style="margin-bottom:4px">' + pt + '</li>').join("");
+      return '<div style="margin-bottom:16px;padding:16px;background:#fff;border-radius:10px;border:1px solid #E0E0E0;page-break-inside:avoid">' +
+        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">' +
+        '<div style="width:28px;height:28px;border-radius:50%;background:#8BB8D9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">' + (i + 1) + '</div>' +
+        '<div style="flex:1"><div style="font-size:16px;font-weight:700;color:#1B3A5C">' + p.drill.name + '</div>' +
+        '<div style="font-size:12px;color:#888">' + p.duration + ' min</div></div></div>' +
+        '<p style="margin:0 0 10px;font-size:13px;color:#333;line-height:1.5">' + p.drill.description + '</p>' +
+        '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#5A9ABF;margin-bottom:4px">Coaching Points</div>' +
+        '<ul style="margin:0;padding:0 0 0 16px;font-size:13px;line-height:1.6;color:#333">' + coachingPts + '</ul>' +
+        '</div>';
     }).join("");
 
-    w.document.write(`<!DOCTYPE html><html><head><title>VCN Practice Plan</title></head><body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:900px;margin:0 auto;padding:24px;color:#1B3A5C">
-      <div style="text-align:center;margin-bottom:24px;border-bottom:3px solid #8BB8D9;padding-bottom:16px">
-        <h1 style="margin:0;font-size:28px;color:#8BB8D9;letter-spacing:4px;font-weight:900">VCN</h1>
-        <p style="margin:2px 0 8px;font-size:10px;color:#8BB8D9;letter-spacing:3px;font-weight:600">VOLLEYBALL CLUB NEBRASKA</p>
-        <h2 style="margin:4px 0;font-size:18px;color:#1B3A5C;font-weight:400">${practiceTitle || "Practice Plan"}</h2>
-        ${teamName ? `<p style="margin:4px 0;font-size:14px;color:#666">${teamName}</p>` : ""}
-        ${practiceDate ? `<p style="margin:4px 0;font-size:14px;color:#666">${practiceDate}</p>` : ""}
-        ${practiceQuote ? `<p style="margin:8px 0;font-style:italic;color:#444;font-size:13px">"${practiceQuote}"</p>` : ""}
-      </div>
-      <div style="display:flex;gap:16px;margin-bottom:16px">
-        <div style="flex:1;background:#E8F2F8;padding:12px;border-radius:8px;text-align:center"><strong style="font-size:20px;color:#1B3A5C">${plan.length}</strong><br><span style="font-size:12px;color:#666">Drills</span></div>
-        <div style="flex:1;background:#E8F5EE;padding:12px;border-radius:8px;text-align:center"><strong style="font-size:20px;color:#1B3A5C">${totalMinutes}</strong><br><span style="font-size:12px;color:#666">Minutes</span></div>
-        <div style="flex:1;background:#FFF3E0;padding:12px;border-radius:8px;text-align:center"><strong style="font-size:20px;color:#1B3A5C">${Math.floor(totalMinutes / 60)}h ${totalMinutes % 60}m</strong><br><span style="font-size:12px;color:#666">Total Time</span></div>
-      </div>
-      <table style="width:100%;border-collapse:collapse;font-size:14px">
-        <thead><tr style="background:#1B3A5C;color:#fff">
-          <th style="padding:10px 12px;text-align:left">#</th>
-          <th style="padding:10px 12px;text-align:left">Drill</th>
-          <th style="padding:10px 12px;text-align:left">Category</th>
-          <th style="padding:10px 12px;text-align:center">Duration</th>
-          <th style="padding:10px 12px;text-align:left">Key Points</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-      <div style="margin-top:24px;padding:16px;background:#F5F7FA;border-radius:8px">
-        <h3 style="margin:0 0 8px;font-size:14px;color:#1B3A5C">Concepts:</h3>
-        <p style="margin:0;font-size:13px;color:#555">Think Well → See Well → Communicate Well → Move Well</p>
-        <p style="margin:4px 0 0;font-size:13px;color:#555">E.P.E.D. = Every Play, Every Day | Let's get 1% better today</p>
-      </div>
-      ${printWithHandbook ? (() => {
-        const cats = [...new Set(plan.map((p) => p.drill.category))];
-        const hbKeys = [...new Set(cats.flatMap((c) => DRILL_TO_HANDBOOK[c] || []))];
-        return hbKeys.map((key) => {
-          const hb = HANDBOOK[key];
-          if (!hb) return "";
-          return '<div style="margin-top:24px;padding:16px;background:#E8F2F8;border-radius:8px;page-break-inside:avoid">' +
-            '<h3 style="margin:0 0 4px;font-size:16px;color:#1B3A5C">' + hb.title + ' Fundamentals</h3>' +
-            '<p style="margin:0 0 8px;font-size:12px;color:#555;font-style:italic">' + hb.principles.slice(0, 2).join(" · ") + '</p>' +
-            '<div style="margin-bottom:8px"><strong style="font-size:11px;color:#5A9ABF;letter-spacing:1px">KEY WORDS: </strong><span style="font-size:12px;color:#1B3A5C">' + hb.keyWords.join(" · ") + '</span></div>' +
-            hb.sections.map((sec) =>
-              '<div style="margin-bottom:8px;padding-left:10px;border-left:2px solid #8BB8D9">' +
-              '<strong style="font-size:12px;color:#1B3A5C">' + sec.title + '</strong> <span style="font-size:10px;padding:1px 6px;border-radius:8px;background:#E8F2F8;color:#5A9ABF">' + sec.level + '</span>' +
-              '<ul style="margin:2px 0 0;padding:0 0 0 14px;font-size:11px;line-height:1.6;color:#444">' +
-              sec.keys.slice(0, 4).map((k) => '<li>' + k + '</li>').join("") +
-              '</ul></div>'
-            ).join("") +
-            '</div>';
-        }).join("");
-      })() : ""}
-      <div style="text-align:center;margin-top:24px;font-size:11px;color:#999">VCNebraska Practice Plan Generator — Competitive Excellence</div>
-      <scr" + "ipt>window.print();</scr" + "ipt>
-    </body></html>`);
+    const handbookHtml = printWithHandbook ? (() => {
+      const cats = [...new Set(plan.map((p) => p.drill.category))];
+      const hbKeys = [...new Set(cats.flatMap((c) => DRILL_TO_HANDBOOK[c] || []))];
+      return hbKeys.map((key) => {
+        const hb = HANDBOOK[key];
+        if (!hb) return "";
+        return '<div style="margin-bottom:16px;padding:16px;background:#E8F2F8;border-radius:10px;page-break-inside:avoid">' +
+          '<h3 style="margin:0 0 4px;font-size:16px;color:#1B3A5C">' + hb.title + ' Fundamentals</h3>' +
+          '<p style="margin:0 0 8px;font-size:12px;color:#555;font-style:italic">' + hb.principles.slice(0, 2).join(" \u00b7 ") + '</p>' +
+          '<div style="margin-bottom:8px"><strong style="font-size:11px;color:#5A9ABF;letter-spacing:1px">KEY WORDS: </strong><span style="font-size:12px;color:#1B3A5C">' + hb.keyWords.join(" \u00b7 ") + '</span></div>' +
+          hb.sections.map((sec) =>
+            '<div style="margin-bottom:8px;padding-left:10px;border-left:2px solid #8BB8D9">' +
+            '<strong style="font-size:12px;color:#1B3A5C">' + sec.title + '</strong> <span style="font-size:10px;padding:1px 6px;border-radius:8px;background:#E8F2F8;color:#5A9ABF">' + sec.level + '</span>' +
+            '<ul style="margin:2px 0 0;padding:0 0 0 14px;font-size:11px;line-height:1.6;color:#444">' +
+            sec.keys.slice(0, 4).map((k) => '<li>' + k + '</li>').join("") +
+            '</ul></div>'
+          ).join("") +
+          '</div>';
+      }).join("");
+    })() : "";
+
+    w.document.write('<!DOCTYPE html><html><head><title>VCN Practice Plan</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.no-print{display:none!important}}</style></head><body style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;max-width:500px;margin:0 auto;padding:16px;color:#1B3A5C;background:#F5F7FA">' +
+      '<div style="text-align:center;margin-bottom:20px;padding-bottom:12px;border-bottom:3px solid #8BB8D9">' +
+      '<h1 style="margin:0;font-size:24px;color:#8BB8D9;letter-spacing:4px;font-weight:900">VCN</h1>' +
+      '<p style="margin:2px 0 6px;font-size:9px;color:#8BB8D9;letter-spacing:3px;font-weight:600">VOLLEYBALL CLUB NEBRASKA</p>' +
+      '<h2 style="margin:4px 0;font-size:16px;color:#1B3A5C;font-weight:400">' + (practiceTitle || "Practice Plan") + '</h2>' +
+      (teamName ? '<p style="margin:2px 0;font-size:13px;color:#666">' + teamName + '</p>' : "") +
+      (practiceDate ? '<p style="margin:2px 0;font-size:13px;color:#666">' + practiceDate + '</p>' : "") +
+      (practiceQuote ? '<p style="margin:6px 0;font-style:italic;color:#444;font-size:12px">"' + practiceQuote + '"</p>' : "") +
+      '</div>' +
+      '<div style="display:flex;gap:8px;margin-bottom:16px">' +
+      '<div style="flex:1;background:#E8F2F8;padding:10px;border-radius:8px;text-align:center"><strong style="font-size:18px;color:#1B3A5C">' + plan.length + '</strong><br><span style="font-size:11px;color:#666">Drills</span></div>' +
+      '<div style="flex:1;background:#E8F5EE;padding:10px;border-radius:8px;text-align:center"><strong style="font-size:18px;color:#1B3A5C">' + totalMinutes + '</strong><br><span style="font-size:11px;color:#666">Minutes</span></div>' +
+      '<div style="flex:1;background:#FFF3E0;padding:10px;border-radius:8px;text-align:center"><strong style="font-size:18px;color:#1B3A5C">' + Math.floor(totalMinutes / 60) + 'h ' + (totalMinutes % 60) + 'm</strong><br><span style="font-size:11px;color:#666">Total</span></div>' +
+      '</div>' +
+      drillCards +
+      handbookHtml +
+      '<div style="text-align:center;margin-top:20px;padding:12px;background:#1B3A5C;border-radius:8px;color:#fff;font-size:11px">' +
+      '<div>Think Well \u2192 See Well \u2192 Communicate Well \u2192 Move Well</div>' +
+      '<div style="margin-top:4px">E.P.E.D. = Every Play, Every Day \u00b7 1% better today</div>' +
+      '</div>' +
+      '<div style="text-align:center;margin-top:12px;font-size:10px;color:#999">VCNebraska Practice Plan Generator</div>' +
+      '<div class="no-print" style="text-align:center;margin-top:16px"><button onclick="window.print()" style="padding:12px 32px;background:#8BB8D9;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer">Save as PDF / Print</button></div>' +
+      '</body></html>');
     w.document.close();
   };
 
@@ -1654,9 +1542,20 @@ function VCNPracticePlanner() {
             <>
               {plan.map((p, i) => (
                 <div key={p.drill.id} style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 0", borderBottom: "1px solid #f0f0f0", fontSize: 13 }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                    <button disabled={i === 0} onClick={() => moveUp(i)} style={{ background: "none", border: "none", cursor: i === 0 ? "default" : "pointer", opacity: i === 0 ? 0.3 : 1, padding: 0, lineHeight: 1 }}>
+                      <Icon type="chevUp" size={12} color="#999" />
+                    </button>
+                    <button disabled={i === plan.length - 1} onClick={() => moveDown(i)} style={{ background: "none", border: "none", cursor: i === plan.length - 1 ? "default" : "pointer", opacity: i === plan.length - 1 ? 0.3 : 1, padding: 0, lineHeight: 1 }}>
+                      <Icon type="chevDown" size={12} color="#999" />
+                    </button>
+                  </div>
                   <span style={{ width: 20, height: 20, borderRadius: "50%", background: VCN.blue, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, flexShrink: 0 }}>{i + 1}</span>
                   <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: VCN.navy, fontWeight: 500 }}>{p.drill.name}</span>
                   <span style={{ fontSize: 11, color: "#999" }}>{p.duration}m</span>
+                  <button onClick={() => removeFromPlan(p.drill.id)} style={{ background: "none", border: "none", cursor: "pointer", padding: 2, lineHeight: 1 }}>
+                    <Icon type="trash" size={12} color={VCN.red} />
+                  </button>
                 </div>
               ))}
               <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12, padding: "8px 0", borderTop: "2px solid #eee", fontSize: 14, fontWeight: 700, color: VCN.navy }}>
@@ -1858,25 +1757,19 @@ function VCNPracticePlanner() {
             </div>
 
             {/* Sections filtered by level */}
-            {(() => {
-              const filtered = selectedHb.sections.filter((sec) => handbookLevelFilter === "All" || sec.level === handbookLevelFilter);
-              if (filtered.length === 0) return (
-                <div style={{ textAlign: "center", padding: 24, color: "#999", fontSize: 13 }}>
-                  No {handbookLevelFilter}-level content for {selectedHb.title}. Try a different level or select "All".
+            {selectedHb.sections
+              .filter((sec) => handbookLevelFilter === "All" || sec.level === handbookLevelFilter)
+              .map((sec) => (
+              <div key={sec.title} style={{ marginBottom: 16, padding: 16, borderRadius: 10, border: `1px solid ${VCN.skyBlue}`, background: "#FAFCFE" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                  <h4 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: VCN.navy }}>{sec.title}</h4>
+                  <DiffBadge level={sec.level} />
                 </div>
-              );
-              return filtered.map((sec) => (
-                <div key={sec.title} style={{ marginBottom: 16, padding: 16, borderRadius: 10, border: `1px solid ${VCN.skyBlue}`, background: "#FAFCFE" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-                    <h4 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: VCN.navy }}>{sec.title}</h4>
-                    <DiffBadge level={sec.level} />
-                  </div>
-                  <ul style={{ margin: 0, padding: "0 0 0 18px", fontSize: 13, lineHeight: 1.8, color: "#444" }}>
-                    {sec.keys.map((k, i) => <li key={i}>{k}</li>)}
-                  </ul>
-                </div>
-              ));
-            })()}
+                <ul style={{ margin: 0, padding: "0 0 0 18px", fontSize: 13, lineHeight: 1.8, color: "#444" }}>
+                  {sec.keys.map((k, i) => <li key={i}>{k}</li>)}
+                </ul>
+              </div>
+            ))}
 
             {/* Related drills */}
             <div style={{ marginTop: 20, paddingTop: 16, borderTop: `2px solid ${VCN.skyBlue}` }}>
@@ -1971,11 +1864,11 @@ function VCNPracticePlanner() {
               Include fundamentals
             </label>
             <button
-              onClick={printPlan}
+              onClick={savePlanAsPDF}
               disabled={plan.length === 0}
               style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 16px", background: plan.length > 0 ? VCN.navy : "#ccc", color: "#fff", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: plan.length > 0 ? "pointer" : "default" }}
             >
-              <Icon type="printer" size={16} color="#fff" /> Print Plan
+              <Icon type="printer" size={16} color="#fff" /> Save / Export
             </button>
           </div>
         </div>
@@ -1993,31 +1886,50 @@ function VCNPracticePlanner() {
           </div>
         ) : (
           <>
-            {/* Phase grouping hints */}
-            {PHASES.map((phase) => {
-              const phaseDrills = plan.filter((p) => p.drill.phase === phase);
-              if (phaseDrills.length === 0) return null;
-              return (
-                <div key={phase} style={{ marginBottom: 16 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: VCN.blue, marginBottom: 6, padding: "4px 0", borderBottom: `2px solid ${VCN.skyBlue}` }}>
-                    {phase}
-                  </div>
-                </div>
-              );
-            })}
-
             {plan.map((item, i) => (
-              <PlanItem
-                key={item.drill.id}
-                item={item}
-                index={i}
-                onRemove={removeFromPlan}
-                onDurationChange={changeDuration}
-                onMoveUp={moveUp}
-                onMoveDown={moveDown}
-                isFirst={i === 0}
-                isLast={i === plan.length - 1}
-              />
+              <div key={item.drill.id} style={{ background: VCN.white, borderRadius: 12, padding: 16, marginBottom: 12, border: "1px solid #E0E0E0" }}>
+                {/* Header row with number, name, controls */}
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                    <button disabled={i === 0} onClick={() => moveUp(i)} style={{ background: "none", border: "none", cursor: i === 0 ? "default" : "pointer", opacity: i === 0 ? 0.3 : 1, padding: 0, lineHeight: 1 }}>
+                      <Icon type="chevUp" size={14} color="#999" />
+                    </button>
+                    <button disabled={i === plan.length - 1} onClick={() => moveDown(i)} style={{ background: "none", border: "none", cursor: i === plan.length - 1 ? "default" : "pointer", opacity: i === plan.length - 1 ? 0.3 : 1, padding: 0, lineHeight: 1 }}>
+                      <Icon type="chevDown" size={14} color="#999" />
+                    </button>
+                  </div>
+                  <div style={{ width: 28, height: 28, borderRadius: "50%", background: VCN.blue, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, flexShrink: 0 }}>
+                    {i + 1}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 16, fontWeight: 700, color: VCN.navy }}>{item.drill.name}</div>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                    <input
+                      type="number"
+                      value={item.duration}
+                      onChange={(e) => changeDuration(i, parseInt(e.target.value) || 0)}
+                      style={{ width: 44, padding: "4px 6px", border: "1px solid #ddd", borderRadius: 6, fontSize: 13, textAlign: "center" }}
+                      min={1} max={120}
+                    />
+                    <span style={{ fontSize: 12, color: "#888" }}>min</span>
+                  </div>
+                  <button onClick={() => removeFromPlan(item.drill.id)} style={{ background: "none", border: "none", cursor: "pointer", padding: 4 }}>
+                    <Icon type="trash" size={16} color={VCN.red} />
+                  </button>
+                </div>
+
+                {/* Description */}
+                <p style={{ margin: "0 0 10px", fontSize: 13, color: "#333", lineHeight: 1.5 }}>{item.drill.description}</p>
+
+                {/* Coaching Points */}
+                <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: VCN.blue, marginBottom: 4 }}>Coaching Points</div>
+                <ul style={{ margin: 0, padding: "0 0 0 16px", fontSize: 13, lineHeight: 1.6, color: "#333" }}>
+                  {item.drill.coachingPoints.map((pt, j) => (
+                    <li key={j} style={{ marginBottom: 2 }}>{pt}</li>
+                  ))}
+                </ul>
+              </div>
             ))}
 
             <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16, padding: "12px 0", borderTop: "2px solid #eee" }}>
@@ -2031,7 +1943,7 @@ function VCNPracticePlanner() {
       {/* VCN Concepts reminder */}
       <div style={{ marginTop: 16, background: VCN.navy, borderRadius: 12, padding: 20, color: "#fff" }}>
         <h4 style={{ margin: "0 0 8px", fontSize: 14, color: VCN.blue }}>VCN Coaching Concepts</h4>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, fontSize: 13 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 13 }}>
           <div>Think Well → See Well → Communicate Well → Move Well</div>
           <div>E.P.E.D. = Every Play, Every Day</div>
           <div>Competitive Excellence — 1% better today</div>
@@ -2125,9 +2037,9 @@ function VCNPracticePlanner() {
   );
 }
 
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<VCNPracticePlanner />);
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<VCNPracticePlanner />);
-  </script>
+</script>
 </body>
 </html>
